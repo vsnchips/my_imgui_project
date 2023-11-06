@@ -175,6 +175,54 @@ ImGui/fast:
 	cd /Users/daston/play/my_imgui_project/build && $(MAKE) $(MAKESILENT) -f extern/imgui/CMakeFiles/ImGui.dir/build.make extern/imgui/CMakeFiles/ImGui.dir/build
 .PHONY : ImGui/fast
 
+backends/imgui_impl_glfw.o: backends/imgui_impl_glfw.cpp.o
+.PHONY : backends/imgui_impl_glfw.o
+
+# target to build an object file
+backends/imgui_impl_glfw.cpp.o:
+	cd /Users/daston/play/my_imgui_project/build && $(MAKE) $(MAKESILENT) -f extern/imgui/CMakeFiles/ImGui.dir/build.make extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.o
+.PHONY : backends/imgui_impl_glfw.cpp.o
+
+backends/imgui_impl_glfw.i: backends/imgui_impl_glfw.cpp.i
+.PHONY : backends/imgui_impl_glfw.i
+
+# target to preprocess a source file
+backends/imgui_impl_glfw.cpp.i:
+	cd /Users/daston/play/my_imgui_project/build && $(MAKE) $(MAKESILENT) -f extern/imgui/CMakeFiles/ImGui.dir/build.make extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.i
+.PHONY : backends/imgui_impl_glfw.cpp.i
+
+backends/imgui_impl_glfw.s: backends/imgui_impl_glfw.cpp.s
+.PHONY : backends/imgui_impl_glfw.s
+
+# target to generate assembly for a file
+backends/imgui_impl_glfw.cpp.s:
+	cd /Users/daston/play/my_imgui_project/build && $(MAKE) $(MAKESILENT) -f extern/imgui/CMakeFiles/ImGui.dir/build.make extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.s
+.PHONY : backends/imgui_impl_glfw.cpp.s
+
+backends/imgui_impl_opengl3.o: backends/imgui_impl_opengl3.cpp.o
+.PHONY : backends/imgui_impl_opengl3.o
+
+# target to build an object file
+backends/imgui_impl_opengl3.cpp.o:
+	cd /Users/daston/play/my_imgui_project/build && $(MAKE) $(MAKESILENT) -f extern/imgui/CMakeFiles/ImGui.dir/build.make extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.o
+.PHONY : backends/imgui_impl_opengl3.cpp.o
+
+backends/imgui_impl_opengl3.i: backends/imgui_impl_opengl3.cpp.i
+.PHONY : backends/imgui_impl_opengl3.i
+
+# target to preprocess a source file
+backends/imgui_impl_opengl3.cpp.i:
+	cd /Users/daston/play/my_imgui_project/build && $(MAKE) $(MAKESILENT) -f extern/imgui/CMakeFiles/ImGui.dir/build.make extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.i
+.PHONY : backends/imgui_impl_opengl3.cpp.i
+
+backends/imgui_impl_opengl3.s: backends/imgui_impl_opengl3.cpp.s
+.PHONY : backends/imgui_impl_opengl3.s
+
+# target to generate assembly for a file
+backends/imgui_impl_opengl3.cpp.s:
+	cd /Users/daston/play/my_imgui_project/build && $(MAKE) $(MAKESILENT) -f extern/imgui/CMakeFiles/ImGui.dir/build.make extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.s
+.PHONY : backends/imgui_impl_opengl3.cpp.s
+
 imgui.o: imgui.cpp.o
 .PHONY : imgui.o
 
@@ -260,6 +308,12 @@ help:
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... ImGui"
+	@echo "... backends/imgui_impl_glfw.o"
+	@echo "... backends/imgui_impl_glfw.i"
+	@echo "... backends/imgui_impl_glfw.s"
+	@echo "... backends/imgui_impl_opengl3.o"
+	@echo "... backends/imgui_impl_opengl3.i"
+	@echo "... backends/imgui_impl_opengl3.s"
 	@echo "... imgui.o"
 	@echo "... imgui.i"
 	@echo "... imgui.s"

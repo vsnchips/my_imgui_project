@@ -1,7 +1,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <imgui.h>
-//#include <imgui_impl_glfw.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 
 // Function to create ImGui dialogs
 void CreateImGuiDialog(int windowId) {
@@ -33,7 +34,7 @@ int main() {
         glfwPollEvents();
 
         // ImGui frame
-        ImGui_ImplGlfw_NewFrame();
+        ImGui_ImplOpenGL3_NewFrame();
         ImGui::NewFrame();
 
         CreateImGuiDialog(1); // Pass window ID 1
@@ -44,7 +45,7 @@ int main() {
         glViewport(0, 0, display_w, display_h);
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplGlfw_RenderDrawData(ImGui::GetDrawData());
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window1);
     }
@@ -77,7 +78,7 @@ int main() {
         glViewport(0, 0, display_w, display_h);
         glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        ImGui_ImplGlfw_RenderDrawData(ImGui::GetDrawData());
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window2);
     }

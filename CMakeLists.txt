@@ -10,7 +10,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules")
 
 # Find and link ImGui
 find_package(ImGui REQUIRED)
-if (ImGui_FOUND)
+if (IMGUI_LIBRARIES)
     message(STATUS "Found ImGui: ${IMGUI_INCLUDE_DIRS}, ${IMGUI_LIBRARIES}")
 else()
     message(FATAL_ERROR "ImGui not found. Please install ImGui or specify its location.")

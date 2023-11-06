@@ -1,0 +1,14 @@
+/Users/daston/play/my_imgui_project/build/CMakeFiles/twoWindows.dir
+/Users/daston/play/my_imgui_project/build/CMakeFiles/edit_cache.dir
+/Users/daston/play/my_imgui_project/build/CMakeFiles/rebuild_cache.dir
+/Users/daston/play/my_imgui_project/build/CMakeFiles/list_install_components.dir
+/Users/daston/play/my_imgui_project/build/CMakeFiles/install.dir
+/Users/daston/play/my_imgui_project/build/CMakeFiles/install/local.dir
+/Users/daston/play/my_imgui_project/build/CMakeFiles/install/strip.dir
+/Users/daston/play/my_imgui_project/build/extern/imgui/CMakeFiles/ImGui.dir
+/Users/daston/play/my_imgui_project/build/extern/imgui/CMakeFiles/edit_cache.dir
+/Users/daston/play/my_imgui_project/build/extern/imgui/CMakeFiles/rebuild_cache.dir
+/Users/daston/play/my_imgui_project/build/extern/imgui/CMakeFiles/list_install_components.dir
+/Users/daston/play/my_imgui_project/build/extern/imgui/CMakeFiles/install.dir
+/Users/daston/play/my_imgui_project/build/extern/imgui/CMakeFiles/install/local.dir
+/Users/daston/play/my_imgui_project/build/extern/imgui/CMakeFiles/install/strip.dir

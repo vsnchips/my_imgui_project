@@ -14,10 +14,20 @@ set(CMAKE_CXX_COMPILER "g++")
 # Include custom CMake modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules")
 
-# Add your source files here
+
+##### MAIN TARGET SOURCES #########
+# Create the executable target
 add_executable(twoWindows main.cpp)
 
-## IMGUI!
+# Glob source files in the 'operators/' directory
+file(GLOB OPERATORS_SOURCE_FILES operators/*.cpp)
+
+# Add the globbed source files to the target
+target_sources(twoWindows PRIVATE ${OPERATORS_SOURCE_FILES})
+
+
+
+########### IMGUI! ##################
 # Include the subdirectory
 
 #Find and link GLFW

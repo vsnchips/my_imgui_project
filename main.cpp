@@ -7,6 +7,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "operators/isfRenderer.hpp"
+
 // Function to create ImGui dialogs
 void CreateImGuiDialog(int windowId)
 {
@@ -18,6 +20,42 @@ void CreateImGuiDialog(int windowId)
 static void glfw_error_callback(int error, const char *description)
 {
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+}
+
+ISFRenderer* renderer = nullptr;
+// Callback function to handle dropped files
+void handleFileDrop(GLFWwindow* window, int count, const char* paths[]) {
+    /*
+    if (count > 0) {
+        // Assuming only one file is dropped; you can handle multiple files if needed
+        std::string shaderPath = paths[0];
+
+        // Create the ISFRenderer and load the shader
+        if (renderer) {
+            delete renderer; // Clean up the existing renderer, if any
+        }
+        renderer = new ISFRenderer();
+        renderer->loadISFShader(shaderPath);
+
+        // Start rendering
+        while (!glfwWindowShouldClose(window)) {
+            // Clear the framebuffer
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            // Render the ISF shader
+            if (renderer) {
+                renderer->render();
+            }
+
+            // Swap buffers and poll for events
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
+
+        // Clean up
+        delete renderer;
+        renderer = nullptr;
+    }*/
 }
 
 int main()
@@ -39,13 +77,12 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // Required on Mac
 #else
-:w
 	// GL 3.0 + GLSL 130
 	const char *glsl_version = "#version 130";
-glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-// glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
-// glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+    // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
 #endif
 
 #pragma endregion
@@ -60,6 +97,9 @@ glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     }
     glfwMakeContextCurrent(window1);
     glfwSwapInterval(1); // Enable vsync
+
+    // Set the file drop callback
+    glfwSetDropCallback(window1, handleFileDrop);
 
 #pragma endregion
 #pragma region init glew

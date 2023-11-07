@@ -14,11 +14,15 @@ void CreateImGuiDialog(int windowId) {
     ImGui::End();
 }
 
+static void glfw_error_callback(int error, const char *description)
+{
+	fprintf(stderr, "Glfw Error %d: %s\n", error, description);
+}
+
 int main() {
 
 	// Setup window
-
-    //glfwSetErrorCallback(glfw_error_callback);
+    glfwSetErrorCallback(glfw_error_callback);
 
     if (!glfwInit()) {
         return -1;

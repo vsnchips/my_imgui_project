@@ -69,92 +69,92 @@ include extern/imgui/CMakeFiles/ImGui.dir/progress.make
 # Include the compile flags for this target's objects.
 include extern/imgui/CMakeFiles/ImGui.dir/flags.make
 
-extern/imgui/CMakeFiles/ImGui.dir/imgui.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/flags.make
-extern/imgui/CMakeFiles/ImGui.dir/imgui.cpp.o: /Users/daston/play/my_imgui_project/extern/imgui/imgui.cpp
-extern/imgui/CMakeFiles/ImGui.dir/imgui.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object extern/imgui/CMakeFiles/ImGui.dir/imgui.cpp.o"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT extern/imgui/CMakeFiles/ImGui.dir/imgui.cpp.o -MF CMakeFiles/ImGui.dir/imgui.cpp.o.d -o CMakeFiles/ImGui.dir/imgui.cpp.o -c /Users/daston/play/my_imgui_project/extern/imgui/imgui.cpp
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/flags.make
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui.cpp.o: /Users/daston/play/my_imgui_project/extern/imgui/src/imgui.cpp
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object extern/imgui/CMakeFiles/ImGui.dir/src/imgui.cpp.o"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT extern/imgui/CMakeFiles/ImGui.dir/src/imgui.cpp.o -MF CMakeFiles/ImGui.dir/src/imgui.cpp.o.d -o CMakeFiles/ImGui.dir/src/imgui.cpp.o -c /Users/daston/play/my_imgui_project/extern/imgui/src/imgui.cpp
 
-extern/imgui/CMakeFiles/ImGui.dir/imgui.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ImGui.dir/imgui.cpp.i"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daston/play/my_imgui_project/extern/imgui/imgui.cpp > CMakeFiles/ImGui.dir/imgui.cpp.i
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ImGui.dir/src/imgui.cpp.i"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daston/play/my_imgui_project/extern/imgui/src/imgui.cpp > CMakeFiles/ImGui.dir/src/imgui.cpp.i
 
-extern/imgui/CMakeFiles/ImGui.dir/imgui.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ImGui.dir/imgui.cpp.s"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daston/play/my_imgui_project/extern/imgui/imgui.cpp -o CMakeFiles/ImGui.dir/imgui.cpp.s
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ImGui.dir/src/imgui.cpp.s"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daston/play/my_imgui_project/extern/imgui/src/imgui.cpp -o CMakeFiles/ImGui.dir/src/imgui.cpp.s
 
-extern/imgui/CMakeFiles/ImGui.dir/imgui_draw.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/flags.make
-extern/imgui/CMakeFiles/ImGui.dir/imgui_draw.cpp.o: /Users/daston/play/my_imgui_project/extern/imgui/imgui_draw.cpp
-extern/imgui/CMakeFiles/ImGui.dir/imgui_draw.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object extern/imgui/CMakeFiles/ImGui.dir/imgui_draw.cpp.o"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT extern/imgui/CMakeFiles/ImGui.dir/imgui_draw.cpp.o -MF CMakeFiles/ImGui.dir/imgui_draw.cpp.o.d -o CMakeFiles/ImGui.dir/imgui_draw.cpp.o -c /Users/daston/play/my_imgui_project/extern/imgui/imgui_draw.cpp
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui_draw.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/flags.make
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui_draw.cpp.o: /Users/daston/play/my_imgui_project/extern/imgui/src/imgui_draw.cpp
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui_draw.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object extern/imgui/CMakeFiles/ImGui.dir/src/imgui_draw.cpp.o"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT extern/imgui/CMakeFiles/ImGui.dir/src/imgui_draw.cpp.o -MF CMakeFiles/ImGui.dir/src/imgui_draw.cpp.o.d -o CMakeFiles/ImGui.dir/src/imgui_draw.cpp.o -c /Users/daston/play/my_imgui_project/extern/imgui/src/imgui_draw.cpp
 
-extern/imgui/CMakeFiles/ImGui.dir/imgui_draw.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ImGui.dir/imgui_draw.cpp.i"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daston/play/my_imgui_project/extern/imgui/imgui_draw.cpp > CMakeFiles/ImGui.dir/imgui_draw.cpp.i
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui_draw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ImGui.dir/src/imgui_draw.cpp.i"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daston/play/my_imgui_project/extern/imgui/src/imgui_draw.cpp > CMakeFiles/ImGui.dir/src/imgui_draw.cpp.i
 
-extern/imgui/CMakeFiles/ImGui.dir/imgui_draw.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ImGui.dir/imgui_draw.cpp.s"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daston/play/my_imgui_project/extern/imgui/imgui_draw.cpp -o CMakeFiles/ImGui.dir/imgui_draw.cpp.s
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui_draw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ImGui.dir/src/imgui_draw.cpp.s"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daston/play/my_imgui_project/extern/imgui/src/imgui_draw.cpp -o CMakeFiles/ImGui.dir/src/imgui_draw.cpp.s
 
-extern/imgui/CMakeFiles/ImGui.dir/imgui_widgets.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/flags.make
-extern/imgui/CMakeFiles/ImGui.dir/imgui_widgets.cpp.o: /Users/daston/play/my_imgui_project/extern/imgui/imgui_widgets.cpp
-extern/imgui/CMakeFiles/ImGui.dir/imgui_widgets.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object extern/imgui/CMakeFiles/ImGui.dir/imgui_widgets.cpp.o"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT extern/imgui/CMakeFiles/ImGui.dir/imgui_widgets.cpp.o -MF CMakeFiles/ImGui.dir/imgui_widgets.cpp.o.d -o CMakeFiles/ImGui.dir/imgui_widgets.cpp.o -c /Users/daston/play/my_imgui_project/extern/imgui/imgui_widgets.cpp
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/flags.make
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.o: /Users/daston/play/my_imgui_project/extern/imgui/src/imgui_widgets.cpp
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object extern/imgui/CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.o"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT extern/imgui/CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.o -MF CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.o.d -o CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.o -c /Users/daston/play/my_imgui_project/extern/imgui/src/imgui_widgets.cpp
 
-extern/imgui/CMakeFiles/ImGui.dir/imgui_widgets.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ImGui.dir/imgui_widgets.cpp.i"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daston/play/my_imgui_project/extern/imgui/imgui_widgets.cpp > CMakeFiles/ImGui.dir/imgui_widgets.cpp.i
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.i"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daston/play/my_imgui_project/extern/imgui/src/imgui_widgets.cpp > CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.i
 
-extern/imgui/CMakeFiles/ImGui.dir/imgui_widgets.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ImGui.dir/imgui_widgets.cpp.s"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daston/play/my_imgui_project/extern/imgui/imgui_widgets.cpp -o CMakeFiles/ImGui.dir/imgui_widgets.cpp.s
+extern/imgui/CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.s"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daston/play/my_imgui_project/extern/imgui/src/imgui_widgets.cpp -o CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.s
 
-extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/flags.make
-extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.o: /Users/daston/play/my_imgui_project/extern/imgui/backends/imgui_impl_glfw.cpp
-extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.o"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.o -MF CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.o.d -o CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.o -c /Users/daston/play/my_imgui_project/extern/imgui/backends/imgui_impl_glfw.cpp
+extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/flags.make
+extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.o: /Users/daston/play/my_imgui_project/extern/imgui/src/backends/imgui_impl_glfw.cpp
+extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.o"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.o -MF CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.o.d -o CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.o -c /Users/daston/play/my_imgui_project/extern/imgui/src/backends/imgui_impl_glfw.cpp
 
-extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.i"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daston/play/my_imgui_project/extern/imgui/backends/imgui_impl_glfw.cpp > CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.i
+extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.i"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daston/play/my_imgui_project/extern/imgui/src/backends/imgui_impl_glfw.cpp > CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.i
 
-extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.s"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daston/play/my_imgui_project/extern/imgui/backends/imgui_impl_glfw.cpp -o CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.s
+extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.s"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daston/play/my_imgui_project/extern/imgui/src/backends/imgui_impl_glfw.cpp -o CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.s
 
-extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/flags.make
-extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.o: /Users/daston/play/my_imgui_project/extern/imgui/backends/imgui_impl_opengl3.cpp
-extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.o"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.o -MF CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.o.d -o CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.o -c /Users/daston/play/my_imgui_project/extern/imgui/backends/imgui_impl_opengl3.cpp
+extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/flags.make
+extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.o: /Users/daston/play/my_imgui_project/extern/imgui/src/backends/imgui_impl_opengl3.cpp
+extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.o: extern/imgui/CMakeFiles/ImGui.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.o"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.o -MF CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.o.d -o CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.o -c /Users/daston/play/my_imgui_project/extern/imgui/src/backends/imgui_impl_opengl3.cpp
 
-extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.i"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daston/play/my_imgui_project/extern/imgui/backends/imgui_impl_opengl3.cpp > CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.i
+extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.i"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/daston/play/my_imgui_project/extern/imgui/src/backends/imgui_impl_opengl3.cpp > CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.i
 
-extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.s"
-	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daston/play/my_imgui_project/extern/imgui/backends/imgui_impl_opengl3.cpp -o CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.s
+extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.s"
+	cd /Users/daston/play/my_imgui_project/build/extern/imgui && /Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/daston/play/my_imgui_project/extern/imgui/src/backends/imgui_impl_opengl3.cpp -o CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.s
 
 # Object files for target ImGui
 ImGui_OBJECTS = \
-"CMakeFiles/ImGui.dir/imgui.cpp.o" \
-"CMakeFiles/ImGui.dir/imgui_draw.cpp.o" \
-"CMakeFiles/ImGui.dir/imgui_widgets.cpp.o" \
-"CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.o" \
-"CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.o"
+"CMakeFiles/ImGui.dir/src/imgui.cpp.o" \
+"CMakeFiles/ImGui.dir/src/imgui_draw.cpp.o" \
+"CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.o" \
+"CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.o" \
+"CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.o"
 
 # External object files for target ImGui
 ImGui_EXTERNAL_OBJECTS =
 
-extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/imgui.cpp.o
-extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/imgui_draw.cpp.o
-extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/imgui_widgets.cpp.o
-extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_glfw.cpp.o
-extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/backends/imgui_impl_opengl3.cpp.o
+extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/src/imgui.cpp.o
+extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/src/imgui_draw.cpp.o
+extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/src/imgui_widgets.cpp.o
+extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_glfw.cpp.o
+extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/src/backends/imgui_impl_opengl3.cpp.o
 extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/build.make
 extern/imgui/libImGui.a: extern/imgui/CMakeFiles/ImGui.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX static library libImGui.a"

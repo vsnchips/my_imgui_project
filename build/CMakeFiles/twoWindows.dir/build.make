@@ -92,6 +92,7 @@ twoWindows_EXTERNAL_OBJECTS =
 
 twoWindows: CMakeFiles/twoWindows.dir/main.cpp.o
 twoWindows: CMakeFiles/twoWindows.dir/build.make
+twoWindows: /opt/homebrew/lib/libglfw.dylib
 twoWindows: CMakeFiles/twoWindows.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/daston/play/my_imgui_project/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable twoWindows"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/twoWindows.dir/link.txt --verbose=$(VERBOSE)

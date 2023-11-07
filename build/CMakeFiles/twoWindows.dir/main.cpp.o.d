@@ -47,8 +47,8 @@ CMakeFiles/twoWindows.dir/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/System/Library/Frameworks/OpenGL.framework/Headers/gl.h \
   /opt/homebrew/include/GLFW/glfw3.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/stddef.h \
-  /Users/daston/play/my_imgui_project/extern/imgui/imgui.h \
-  /Users/daston/play/my_imgui_project/extern/imgui/imconfig.h \
+  /Users/daston/play/my_imgui_project/extern/imgui/include/imgui.h \
+  /Users/daston/play/my_imgui_project/extern/imgui/include/imconfig.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/c++/v1/float.h \
   /Library/Developer/CommandLineTools/usr/lib/clang/13.1.6/include/float.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/float.h \
@@ -96,6 +96,6 @@ CMakeFiles/twoWindows.dir/main.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/malloc/_malloc.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_dev_t.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/sys/_types/_mode_t.h \
-  /Users/daston/play/my_imgui_project/extern/imgui/backends/imgui_impl_glfw.h \
-  /Users/daston/play/my_imgui_project/extern/imgui/backends/imgui_impl_opengl3.h \
+  /Users/daston/play/my_imgui_project/extern/imgui/src/backends/imgui_impl_glfw.h \
+  /Users/daston/play/my_imgui_project/extern/imgui/src/backends/imgui_impl_opengl3.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk/usr/include/TargetConditionals.h

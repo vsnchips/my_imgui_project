@@ -30,6 +30,16 @@ else()
     message(FATAL_ERROR "GLEW not found. Please install GLEW or specify its location.")
 endif()
 
+
+find_package(OpenGL REQUIRED)
+if (OpenGL_FOUND)
+    message(STATUS "Found OpenGL: ${OPENGL_INCLUDE_DIRS}, ${GL}, ${OPENGL_LIBRARIES}")
+else()
+    message(FATAL_ERROR "OpenGL not found. Please install OpenGL or specify its location.")
+endif()
+
+
+
 # Define the header files for ImGui
 set(IMGUI_HEADERS
     extern/imgui/imgui.h
@@ -43,6 +53,7 @@ set(IMGUI_SOURCES
     extern/imgui/imgui.cpp
     extern/imgui/imgui_draw.cpp
     extern/imgui/imgui_widgets.cpp
+    extern/imgui/imgui_tables.cpp
     extern/imgui/backends/imgui_impl_glfw.cpp
     extern/imgui/backends/imgui_impl_opengl3.cpp
     # Add other ImGui source files if needed
@@ -54,6 +65,7 @@ add_library(ImGui STATIC ${IMGUI_SOURCES} ${IMGUI_HEADERS})
 # Include the root directory of ImGui as an INTERFACE include directory
 target_include_directories(ImGui PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui
+    ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/backends
     ${GLFW_INCLUDE_DIRS}
 )
 target_include_directories(ImGui INTERFACE
@@ -70,5 +82,6 @@ ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/include
 ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/src
 )
 
+target_compile_definitions(twoWindows PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLEW)
 # Link libraries
-target_link_libraries(twoWindows ${GLFW_LIBRARIES} ${GLEW_LIBRARY} ImGui)
+target_link_libraries(twoWindows ImGui ${GLEW_LIBRARY} ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} )

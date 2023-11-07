@@ -12,7 +12,11 @@
 // Function to create ImGui dialogs
 void DoAllTheImGuis()
 {
+    ImGui::SetNextWindowBgAlpha(0.5f); // Set the alpha value for the window background
+
     ImGui::Begin("Window Dialog");
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 1.0f, 0.5f), "Transparent Text");
+
     ImGui::Text("I am a Dialog");
     ImGui::End();
 }
@@ -65,7 +69,16 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
     // glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+
 #endif
+    glfwWindowHint(GLFW_SAMPLES, 4); // Optional: enable anti-aliasing
+    glfwWindowHint(GLFW_RESIZABLE, 1);
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, 1);
+
+    // Request an alpha (transparency) channel
+    glfwWindowHint(GLFW_ALPHA_BITS, 8); // 8 bits for alpha channel
+
+
 
 #pragma endregion
 #pragma region create window
@@ -134,7 +147,11 @@ int main()
         int display_w, display_h;
         glfwGetFramebufferSize(window1, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
-        glClearColor(0.2f, 0.f, 0.2f, 1.0f);
+
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glClearColor(0.2f, 0.f, 0.2f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Check if the renderer exists and render the quad

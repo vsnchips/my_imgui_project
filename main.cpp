@@ -4,6 +4,9 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 
+#include <iostream>
+#include <sstream>
+
 // Function to create ImGui dialogs
 void CreateImGuiDialog(int windowId) {
     ImGui::Begin("Window Dialog");
@@ -12,9 +15,33 @@ void CreateImGuiDialog(int windowId) {
 }
 
 int main() {
+
+	// Setup window
+
+    //glfwSetErrorCallback(glfw_error_callback);
+
     if (!glfwInit()) {
         return -1;
     }
+		// Decide GL+GLSL versions
+#if __APPLE__
+	// GL 3.2 + GLSL 150
+	const char *glsl_version = "#version 150";
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);		   // Required on Mac
+#else
+:w
+	// GL 3.0 + GLSL 130
+	const char *glsl_version = "#version 130";
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
+	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // 3.0+ only
+#endif
+
+
 
     // Create the first GLFW window
     GLFWwindow* window1 = glfwCreateWindow(640, 480, "Window 1", nullptr, nullptr);
@@ -22,13 +49,22 @@ int main() {
         glfwTerminate();
         return -1;
     }
-
     glfwMakeContextCurrent(window1);
     glfwSwapInterval(1); // Enable vsync
 
     // Initialize ImGui
     ImGui::CreateContext();
-    ImGui_ImplGlfw_InitForOpenGL(window1, true);
+
+    // Initialize ImGui OpenGL3 renderer
+    if (!ImGui_ImplOpenGL3_Init()) {
+        // Handle initialization failure
+        std::cout << "ImGui_ImplOpenGL3_Init failed";
+        return 1;
+    }
+    if (!ImGui_ImplGlfw_InitForOpenGL(window1, true)){
+        std::cout << "ImGui_ImplGlfw_InitForOpenGL failed";
+        return 1;
+    }
 
     while (!glfwWindowShouldClose(window1)) {
         glfwPollEvents();

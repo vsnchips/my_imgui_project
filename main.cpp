@@ -56,11 +56,29 @@ int main() {
     glfwMakeContextCurrent(window1);
     glfwSwapInterval(1); // Enable vsync
 
+
+
+    // Initialise GLEW
+    bool err = glewInit() != GLEW_OK;
+	if (err)
+	{
+		fprintf(stderr, "Failed to initialize OpenGL loader!\n");
+		return 1;
+	}
+
+	int screen_width = 100;
+	int screen_height = 100;
+	glfwGetFramebufferSize(window1, &screen_width, &screen_height);
+	glViewport(0, 0, screen_width, screen_height);
+
+
     // Initialize ImGui
+	// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
     ImGui::CreateContext();
 
     // Initialize ImGui OpenGL3 renderer
-    if (!ImGui_ImplOpenGL3_Init()) {
+    if (!ImGui_ImplOpenGL3_Init(glsl_version)) {
         // Handle initialization failure
         std::cout << "ImGui_ImplOpenGL3_Init failed";
         return 1;

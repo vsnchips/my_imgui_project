@@ -10,10 +10,10 @@
 #include "operators/isfRenderer.hpp"
 
 // Function to create ImGui dialogs
-void CreateImGuiDialog(int windowId)
+void DoAllTheImGuis()
 {
     ImGui::Begin("Window Dialog");
-    ImGui::Text("Window ID: %d", windowId);
+    ImGui::Text("I am a Dialog");
     ImGui::End();
 }
 
@@ -147,7 +147,7 @@ int main()
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        CreateImGuiDialog(1); // Pass window ID 1
+        DoAllTheImGuis(); // Pass window ID 1
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

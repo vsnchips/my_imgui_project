@@ -144,6 +144,7 @@ int main()
 
         // ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
         CreateImGuiDialog(1); // Pass window ID 1

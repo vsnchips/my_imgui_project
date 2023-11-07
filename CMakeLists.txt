@@ -49,7 +49,7 @@ set(IMGUI_SOURCES
 )
 
 # Create the ImGui library target
-add_library(ImGui STATIC ${IMGUI_SOURCES} ${IMGUI_HEADERS} ${GLFW_LIBRARIES})
+add_library(ImGui STATIC ${IMGUI_SOURCES} ${IMGUI_HEADERS})
 
 # Include the root directory of ImGui as an INTERFACE include directory
 target_include_directories(ImGui PRIVATE
@@ -59,6 +59,7 @@ target_include_directories(ImGui PRIVATE
 target_include_directories(ImGui INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui
 )
+target_link_libraries(ImGui ${GLFW_LIBRARIES})
 
 #TODO:
 #Find and link imnodes

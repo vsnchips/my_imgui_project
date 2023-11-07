@@ -25,37 +25,19 @@ static void glfw_error_callback(int error, const char *description)
 ISFRenderer* renderer = nullptr;
 // Callback function to handle dropped files
 void handleFileDrop(GLFWwindow* window, int count, const char* paths[]) {
-    /*
+
     if (count > 0) {
         // Assuming only one file is dropped; you can handle multiple files if needed
         std::string shaderPath = paths[0];
+
+        std::cout << "Drag/Drop recieved path " << shaderPath <<std::endl;
 
         // Create the ISFRenderer and load the shader
         if (renderer) {
             delete renderer; // Clean up the existing renderer, if any
         }
-        renderer = new ISFRenderer();
-        renderer->loadISFShader(shaderPath);
-
-        // Start rendering
-        while (!glfwWindowShouldClose(window)) {
-            // Clear the framebuffer
-            glClear(GL_COLOR_BUFFER_BIT);
-
-            // Render the ISF shader
-            if (renderer) {
-                renderer->render();
-            }
-
-            // Swap buffers and poll for events
-            glfwSwapBuffers(window);
-            glfwPollEvents();
-        }
-
-        // Clean up
-        delete renderer;
-        renderer = nullptr;
-    }*/
+        renderer = ISFRenderer::createAndLoadISFShader(paths[0]);
+    }
 }
 
 int main()
@@ -149,6 +131,17 @@ int main()
     {
         glfwPollEvents();
 
+        int display_w, display_h;
+        glfwGetFramebufferSize(window1, &display_w, &display_h);
+        glViewport(0, 0, display_w, display_h);
+        glClearColor(0.2f, 0.f, 0.2f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // Check if the renderer exists and render the quad
+        if (renderer) {
+            renderer->render();
+        }
+
         // ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui::NewFrame();
@@ -156,11 +149,6 @@ int main()
         CreateImGuiDialog(1); // Pass window ID 1
 
         ImGui::Render();
-        int display_w, display_h;
-        glfwGetFramebufferSize(window1, &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
-        glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window1);

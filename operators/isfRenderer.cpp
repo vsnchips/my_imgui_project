@@ -51,15 +51,28 @@ ISFRenderer::~ISFRenderer()
     glDeleteBuffers(1, &EBO);
 }
 
+// ISFRenderer.cpp
+ISFRenderer* ISFRenderer::createAndLoadISFShader(const std::string& shaderPath) {
+    ISFRenderer* renderer = new ISFRenderer();
+
+    std::cout << "Loading Shader " << shaderPath << std::endl;
+
+    // Load and compile the ISF shader program
+    renderer->compileISFShader(shaderPath);
+    if (renderer->shaderProgram == 0) {
+        std::cerr << "Failed to load ISF shader: " << shaderPath << std::endl;
+    }
+    return renderer;
+}
+
+
 void ISFRenderer::loadISFShader(const std::string &shaderPath)
 {
+    std::cout <<"Loading Shader " << shaderPath <<std::endl;
+
     // Load and compile the ISF shader program
-    shaderProgram = compileISFShader(shaderPath);
-    if (shaderProgram == 0)
-    {
-        std::cerr << "Failed to load ISF shader: " << shaderPath << std::endl;
-        exit(EXIT_FAILURE);
-    }
+    compileISFShader(shaderPath);
+
 
     // Initialize ISF parameters
     // ISFParameters::parseISFShaderAndDisplayParams(shaderPath);
@@ -67,8 +80,10 @@ void ISFRenderer::loadISFShader(const std::string &shaderPath)
 
 void ISFRenderer::render()
 {
+    std::cout << "rendering" << std::endl;
+
     // Use the ISF shader program
-    glUseProgram(shaderProgram);
+    if(shaderProgram) glUseProgram(shaderProgram);
 
     // Update ISF shader uniforms here (e.g., time, other parameters)
     updateISFUniforms();
@@ -77,30 +92,97 @@ void ISFRenderer::render()
     renderQuad();
 }
 
-GLuint ISFRenderer::compileISFShader(const std::string &shaderPath)
-{
+// Utility function to check shader compilation errors
+bool checkShaderCompilation(GLuint shader) {
+    GLint success;
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        GLint logLength;
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
+        std::vector<GLchar> errorLog(logLength);
+        glGetShaderInfoLog(shader, logLength, nullptr, errorLog.data());
+        std::cerr << "Shader compilation error: " << errorLog.data() << std::endl;
+        return false;
+    }
+    return true;
+}
+
+// Utility function to check program linking errors
+bool checkProgramLinking(GLuint program) {
+    GLint success;
+    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    if (!success) {
+        GLint logLength;
+        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+        std::vector<GLchar> errorLog(logLength);
+        glGetProgramInfoLog(program, logLength, nullptr, errorLog.data());
+        std::cerr << "Program linking error: " << errorLog.data() << std::endl;
+        return false;
+    }
+    return true;
+}
+void ISFRenderer::compileISFShader(const std::string& shaderPath) {
     // Load and compile the ISF shader code (you'll need to implement this)
     std::string shaderCode = loadShaderCode(shaderPath);
-    const char *shaderCodePtr = shaderCode.c_str();
+    const char* shaderCodePtr = shaderCode.c_str();
 
-    GLuint shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(shader, 1, &shaderCodePtr, nullptr);
-    glCompileShader(shader);
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 
-    // Check for shader compilation errors (you should add error checking)
-    // ...
+    // Define a default vertex shader
+    const char* defaultVertexShaderCode = R"(
+        #version 330 core
+        layout (location = 0) in vec3 aPos;
+        layout (location = 1) in vec2 aTexCoord;
 
-    // Link the shader program
+        out vec2 TexCoord;
+
+        void main() {
+            gl_Position = vec4(aPos, 1.0);
+            TexCoord = aTexCoord;
+        }
+    )";
+
+        glShaderSource(vertexShader, 1, &defaultVertexShaderCode, nullptr);
+    glCompileShader(vertexShader);
+
+    // Check for vertex shader compilation errors
+    if (!checkShaderCompilation(vertexShader)) {
+        setError("Vertex shader compilation failed.");
+        return;
+    }
+
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &shaderCodePtr, nullptr);
+    glCompileShader(fragmentShader);
+
+    // Check for fragment shader compilation errors
+    if (!checkShaderCompilation(fragmentShader)) {
+        setError("Fragment shader compilation failed.");
+        return;
+    }
+
     GLuint program = glCreateProgram();
-    glAttachShader(program, shader);
+    glAttachShader(program, vertexShader);
+    glAttachShader(program, fragmentShader);
     glLinkProgram(program);
 
-    // Check for program linking errors (you should add error checking)
-    // ...
+    // Check for program linking errors
+    if (!checkProgramLinking(program)) {
+        setError("Shader program linking failed.");
+        return;
+    }
 
-    glDeleteShader(shader);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
 
-    return program;
+
+    shaderProgram = program;
+
+    std::cout <<"Loaded Shader " << shaderPath <<std::endl;
+
+    // Initialize ISF parameters
+    // ISFParameters::parseISFShaderAndDisplayParams(shaderPath);
+
 }
 
 std::string ISFRenderer::loadShaderCode(const std::string &filePath)
@@ -155,4 +237,11 @@ void ISFRenderer::renderQuad()
 
     // Unbind the VAO after rendering
     glBindVertexArray(0);
+}
+void ISFRenderer::setError(const std::string& errorMsg) {
+    error = errorMsg;
+}
+
+std::string ISFRenderer::getError() const {
+    return error;
 }

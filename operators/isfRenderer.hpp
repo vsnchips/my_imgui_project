@@ -11,10 +11,22 @@ public:
     ISFRenderer();
     ~ISFRenderer();
 
+    // Static method to create an ISFRenderer instance and load a shader
+    static ISFRenderer* createAndLoadISFShader(const std::string& shaderPath);
+
     void loadISFShader(const std::string& shaderPath);
     void render();
 
+    // Function to get the error message
+    std::string getError() const;
+
 private:
+
+    std::string error; // Member variable to store error messages
+
+    // Function to set an error message
+    void setError(const std::string& errorMsg);
+
     GLuint shaderProgram;
     float timer;
 
@@ -23,7 +35,7 @@ private:
     GLuint VBO;
     GLuint EBO;
 
-    GLuint compileISFShader(const std::string& shaderPath);
+    void compileISFShader(const std::string& shaderPath);
     std::string loadShaderCode(const std::string& filePath);
     void updateISFUniforms();
     void renderQuad();

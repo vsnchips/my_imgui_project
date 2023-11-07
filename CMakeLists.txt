@@ -8,21 +8,36 @@ set(CMAKE_CXX_STANDARD 11)
 # Include custom CMake modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules")
 
-
 # Add your source files here
 add_executable(twoWindows main.cpp)
 
 ## IMGUI!
 # Include the subdirectory
-add_subdirectory(extern/imgui)
 
-# Example: Print the interface include directories and libraries of the ImGui target
-get_target_property(imgui_interface_includes ImGui INTERFACE_INCLUDE_DIRECTORIES)
-message("Interface include directories of ImGui: ${imgui_interface_includes}")
+# Define the header files for ImGui
+set(IMGUI_HEADERS
+    exter/imgui/imgui.h
+    exter/imgui/imconfig.h
+   extern/imgui/imgui_internal.h
+    # Add other ImGui header files if needed
+)
 
-get_target_property(imgui_interface_libraries ImGui INTERFACE_LINK_LIBRARIES)
-message("Interface libraries of ImGui: ${imgui_interface_libraries}")
+# Define the source files for ImGui
+set(IMGUI_SOURCES
+    extern/imgui/imgui.cpp
+    extern/imgui_draw.cpp
+    extern/imgui_widgets.cpp
+    extern/imgui/backends/imgui_impl_glfw.cpp
+    extern/imgui/backends/imgui_impl_opengl3.cpp
+    # Add other ImGui source files if needed
+)
 
+# Create the ImGui library target
+add_library(ImGui STATIC ${IMGUI_SOURCES} ${IMGUI_HEADERS})
+
+# Include the root directory of ImGui as an INTERFACE include directory
+target_include_directories(ImGui PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui)
+target_include_directories(ImGui INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui)
 
 #Find and link GLFW
 find_package(GLFW REQUIRED)
@@ -31,6 +46,9 @@ if (GLFW_FOUND)
 else()
     message(FATAL_ERROR "GLFW not found. Please install GLFW or specify its location.")
 endif()
+
+#TODO:
+#Find and link imnodes
 
 
 # Find and link GLEW
@@ -49,4 +67,4 @@ ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/src
 )
 
 # Link libraries
-target_link_libraries(twoWindows ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${IMGUI_LIBRARIES})
+target_link_libraries(twoWindows ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ImGui)

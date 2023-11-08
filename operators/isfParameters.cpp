@@ -16,21 +16,25 @@ std::vector<json> parseJsonBlocks(const std::string& inputFileName);
 std::vector<ISFParameter> constructParametersFromJson(const json &mergedJson);
 
 //Implementations
-ISFParameters ISFParameters::parseISFShaderAndDisplayParams(const std::string &shaderCode){
+ISFParameters * ISFParameters::parseISFShaderAndDisplayParams(const std::string &shaderCode){
 
+    std::cout << "parsing ISF Json" << std::endl;
     std::vector<json> parsedData = parseJsonBlocks(shaderCode);
+    std::cout << "Parsed " << parsedData.size() << " blocks" << std::endl;
+
     json mergedJson;
     try {
         // Merge all parsed JSON blocks into one
         mergedJson = mergeJsonBlocks(parsedData);
 
         // Process the merged JSON data
-        std::cout << mergedJson.dump(4) << std::endl;
+        std::cout << "Merged JSON" << mergedJson.dump(4) << std::endl;
+
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
 
-    new ISFParameters( constructParametersFromJson(mergedJson) );
+    return new ISFParameters( constructParametersFromJson(mergedJson) );
 
 }
 
@@ -52,21 +56,32 @@ json mergeJsonBlocks(const std::vector<json>& jsonBlocks) {
 
 std::vector<json> parseJsonBlocks(const std::string& inputString) {
 
+/*
+    std::cout << "parsing:" << std::endl;
+    std::cout << inputString << std::endl;
+*/
     std::vector<json> parsedJsonBlocks;
     std::istringstream inputStream(inputString); // Create a string stream
 
     std::string line;
-    std::string jsonBlock;
+    std::string jsonBlock = "";
+
     bool inBlock = false;
     std::regex commentPattern(R"(//.*)");
 
     while (std::getline(inputStream, line)) {
+
+       // std::cout << (inBlock ? "in-block" : "out-of-block") << " parsing:" << std::endl;
+       // std::cout << line << std::endl;
+
         if (inBlock) {
 
             // Ending the JSON Block.
             if (line.find("}*/") != std::string::npos) {
 
+                std::cout << "Found Block End" << std::endl;
                 inBlock = false;
+
                 jsonBlock += line.substr(0, line.find("}*/") + 1); // Include the closing */
                 std::cout << "Gathered JSON Block:\n" << jsonBlock << std::endl;
 
@@ -76,7 +91,7 @@ std::vector<json> parseJsonBlocks(const std::string& inputString) {
                     std::cout << "Removing comment" << std::endl;
 
                     // Parse the JSON block
-                    std::cout << "parsing the block" << std::endl;
+                    std::cout << "Parsing the block" << std::endl;
                     json parsedJson = json::parse(jsonBlock);
                     parsedJsonBlocks.push_back(parsedJson);
 
@@ -92,8 +107,10 @@ std::vector<json> parseJsonBlocks(const std::string& inputString) {
         }
         // If not in a block, scan for one.
          else if (line.find("/*{") != std::string::npos) {
+
+            std::cout << "Found Block Start" << std::endl;
             inBlock = true;
-            jsonBlock = line.substr(line.find("/*{") + 3) + "\n"; // skip the opening /*{, add the rest of the line
+            jsonBlock = line.substr(line.find("/*{") + 2) + "\n"; // skip the opening /*{, add the rest of the line
         }
     }
 

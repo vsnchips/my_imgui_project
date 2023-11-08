@@ -16,6 +16,7 @@ ISFRenderer::ISFRenderer(const std::string& isfPath) :
  isfWatcher( isfPath, [&](){ shouldReloadShader.store(true); } )
 {
     std::cout <<"Created a FileWatcher for ISF Shader " << shaderPath <<std::endl;
+    shouldReloadShader.store(true);
 
     // Create and initialize the quad geometry
 

@@ -19,7 +19,7 @@ struct ISFParameter {
 
 class ISFParameters {
 public:
-    static ISFParameters parseISFShaderAndDisplayParams(const std::string& isfSource);
+    static ISFParameters * parseISFShaderAndDisplayParams(const std::string& isfSource);
     static void createImGuiWidgets(const std::vector<ISFParameter>& params);
 
     ISFParameters(const std::vector<ISFParameter>& parms){

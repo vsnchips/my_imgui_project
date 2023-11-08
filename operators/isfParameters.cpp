@@ -51,6 +51,7 @@ json mergeJsonBlocks(const std::vector<json>& jsonBlocks) {
 }
 
 std::vector<json> parseJsonBlocks(const std::string& inputString) {
+
     std::vector<json> parsedJsonBlocks;
     std::istringstream inputStream(inputString); // Create a string stream
 
@@ -61,16 +62,25 @@ std::vector<json> parseJsonBlocks(const std::string& inputString) {
 
     while (std::getline(inputStream, line)) {
         if (inBlock) {
+
             // Check for the end of the JSON block
             if (line.find("}*/") != std::string::npos) {
+
+                // End the JSON Block.
                 inBlock = false;
                 jsonBlock += line.substr(0, line.find("}*/") + 1); // Include the closing */
+                std::cout << "Gathered JSON Block:\n" << jsonBlock << std::endl;
+
                 try {
                     // Remove // comments within the JSON block
                     jsonBlock = std::regex_replace(jsonBlock, commentPattern, "");
+                    std::cout << "Removing comment" << std::endl;
+
                     // Parse the JSON block
+                    std::cout << "parsing the block" << std::endl;
                     json parsedJson = json::parse(jsonBlock);
                     parsedJsonBlocks.push_back(parsedJson);
+
                 } catch (const std::exception& e) {
                     std::cerr << "Error parsing JSON: " << e.what() << std::endl;
                 }
@@ -80,9 +90,10 @@ std::vector<json> parseJsonBlocks(const std::string& inputString) {
             }
         } else if (line.find("/*{") != std::string::npos) {
             inBlock = true;
-            jsonBlock = line.substr(line.find("/*{") + 3) + "\n"; // Include the opening /*{
+            jsonBlock = line.substr(line.find("/*{") + 3) + "\n"; // skip the opening /*{, add the rest of the line
         }
     }
+
 
     return parsedJsonBlocks;
 }

@@ -1,6 +1,5 @@
 // ISFRenderer.cpp
 #include "ISFRenderer.hpp"
-#include "ISFParameters.hpp"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -131,8 +130,7 @@ void ISFRenderer::loadAndCompileISF(const std::string& shaderPath) {
     const char* shaderCodePtr = shaderCode.c_str();
 
     // Initialize ISF parameters
-    ISFParameters::parseISFShaderAndDisplayParams( shaderCode );
-
+    m_isfParameters = ISFParameters::parseISFShaderAndDisplayParams( shaderCode );
 
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 

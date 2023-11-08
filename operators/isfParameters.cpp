@@ -16,7 +16,7 @@ std::vector<json> parseJsonBlocks(const std::string& inputFileName);
 std::vector<ISFParameter> constructParametersFromJson(const json &mergedJson);
 
 //Implementations
-std::vector<ISFParameter> ISFParameters::parseISFShaderAndDisplayParams(const std::string &shaderCode){
+ISFParameters ISFParameters::parseISFShaderAndDisplayParams(const std::string &shaderCode){
 
     std::vector<json> parsedData = parseJsonBlocks(shaderCode);
     json mergedJson;
@@ -29,9 +29,9 @@ std::vector<ISFParameter> ISFParameters::parseISFShaderAndDisplayParams(const st
     } catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
-    std::vector<ISFParameter> params = constructParametersFromJson(mergedJson);
 
-    return params;
+    new ISFParameters( constructParametersFromJson(mergedJson) );
+
 }
 
 json mergeJsonBlocks(const std::vector<json>& jsonBlocks) {
@@ -63,10 +63,9 @@ std::vector<json> parseJsonBlocks(const std::string& inputString) {
     while (std::getline(inputStream, line)) {
         if (inBlock) {
 
-            // Check for the end of the JSON block
+            // Ending the JSON Block.
             if (line.find("}*/") != std::string::npos) {
 
-                // End the JSON Block.
                 inBlock = false;
                 jsonBlock += line.substr(0, line.find("}*/") + 1); // Include the closing */
                 std::cout << "Gathered JSON Block:\n" << jsonBlock << std::endl;
@@ -85,15 +84,18 @@ std::vector<json> parseJsonBlocks(const std::string& inputString) {
                     std::cerr << "Error parsing JSON: " << e.what() << std::endl;
                 }
                 jsonBlock.clear();
-            } else {
+            }
+            else // Appending the line to the block
+            {
                 jsonBlock += line + "\n";
             }
-        } else if (line.find("/*{") != std::string::npos) {
+        }
+        // If not in a block, scan for one.
+         else if (line.find("/*{") != std::string::npos) {
             inBlock = true;
             jsonBlock = line.substr(line.find("/*{") + 3) + "\n"; // skip the opening /*{, add the rest of the line
         }
     }
-
 
     return parsedJsonBlocks;
 }

@@ -7,6 +7,9 @@
 
 #include <string>
 
+// TODO: possibly split this to a private header?
+#include "ISFParameters.hpp"
+
 #pragma region fileWatcher
 
 #include <iostream>
@@ -108,7 +111,6 @@ public:
 
     // Function to get the error message
     std::string getError() const;
-
     std::string shaderPath;
 
     FileWatcher isfWatcher;
@@ -131,6 +133,9 @@ private:
     void loadAndCompileISF(const std::string &shaderPath);
     std::string readShaderSource(const std::string &filePath);
     void updateISFUniforms();
+
+    ISFParameters * m_isfParameters;
+
     void renderQuad();
 };
 

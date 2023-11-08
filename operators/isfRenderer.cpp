@@ -1,5 +1,6 @@
 // ISFRenderer.cpp
 #include "ISFRenderer.hpp"
+#include "ISFParameters.hpp"
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -18,7 +19,7 @@ ISFRenderer::ISFRenderer(const std::string& isfPath) :
     std::cout <<"Created a FileWatcher for ISF Shader " << shaderPath <<std::endl;
 
     // Initialize ISF parameters
-    // ISFParameters::parseISFShaderAndDisplayParams(shaderPath);
+    ISFParameters::parseISFShaderAndDisplayParams(shaderPath);
 
     // Create and initialize the quad geometry
 

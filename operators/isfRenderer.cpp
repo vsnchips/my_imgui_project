@@ -18,9 +18,6 @@ ISFRenderer::ISFRenderer(const std::string& isfPath) :
 {
     std::cout <<"Created a FileWatcher for ISF Shader " << shaderPath <<std::endl;
 
-    // Initialize ISF parameters
-    ISFParameters::parseISFShaderAndDisplayParams(shaderPath);
-
     // Create and initialize the quad geometry
 
     // Define the indices for rendering a quad
@@ -132,6 +129,10 @@ void ISFRenderer::loadAndCompileISF(const std::string& shaderPath) {
     // Load and compile the ISF shader code (you'll need to implement this)
     std::string shaderCode = readShaderSource(shaderPath);
     const char* shaderCodePtr = shaderCode.c_str();
+
+    // Initialize ISF parameters
+    ISFParameters::parseISFShaderAndDisplayParams( shaderCode );
+
 
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 

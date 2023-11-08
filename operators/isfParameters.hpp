@@ -19,16 +19,17 @@ struct ISFParameter {
 
 class ISFParameters {
 public:
-    static std::vector<ISFParameter> parseISFShaderAndDisplayParams(const std::string& shaderPath);
+    static std::vector<ISFParameter> parseISFShaderAndDisplayParams(const std::string& isfSource);
     static void createImGuiWidgets(const std::vector<ISFParameter>& params);
 
     // Add a method to associate input names with parameters
     void addInputParameter(const std::string& inputName, const ISFParameter& param);
     ISFParameter* getParameterByName(const std::string& inputName);
+    std::unordered_map<std::string, ISFParameter> inputParameterMap;
 
 private:
     // Maintain a dictionary of input names to parameters
-    std::unordered_map<std::string, ISFParameter> inputParameterMap;
+    //std::vector<ISFParameter> ISFParameters::constructParametersFromJson(const json &mergedJson)
 };
 
 #endif // ISFPARAMETERS_HPP

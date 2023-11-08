@@ -1,109 +1,138 @@
 // ISFParameters.cpp
-// ISFParameters.cpp
 #include "ISFParameters.hpp"
 #include <sstream>
 #include <fstream>
 #include <iostream>
 #include <unordered_map>
 #include <vector>
+#include <regex>
+#include "nlohmann/json.hpp"
 
-std::vector<ISFParameter> ISFParameters::parseISFShaderAndDisplayParams(const std::string &shaderPath)
-{
-    std::vector<ISFParameter> params;
+using json = nlohmann::json;
 
-    std::ifstream shaderFile(shaderPath);
-    if (!shaderFile.is_open())
-    {
-        std::cerr << "Failed to open shader file: " << shaderPath << std::endl;
-        return params;
+// Private header
+json mergeJsonBlocks(const std::vector<json>& jsonBlocks);
+std::vector<json> parseJsonBlocks(const std::string& inputFileName);
+std::vector<ISFParameter> constructParametersFromJson(const json &mergedJson);
+
+//Implementations
+std::vector<ISFParameter> ISFParameters::parseISFShaderAndDisplayParams(const std::string &shaderCode){
+
+    std::vector<json> parsedData = parseJsonBlocks(shaderCode);
+    json mergedJson;
+    try {
+        // Merge all parsed JSON blocks into one
+        mergedJson = mergeJsonBlocks(parsedData);
+
+        // Process the merged JSON data
+        std::cout << mergedJson.dump(4) << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
     }
+    std::vector<ISFParameter> params = constructParametersFromJson(mergedJson);
 
-    bool parsingGLSL = false;
-    std::stringstream glslCode;
-    std::string jsonBlock;
+    return params;
+}
+
+json mergeJsonBlocks(const std::vector<json>& jsonBlocks) {
+    json mergedJson;
+
+    for (const auto& jsonObject : jsonBlocks) {
+        // Merge the current JSON object into the mergedJson
+        for (auto it = jsonObject.begin(); it != jsonObject.end(); ++it) {
+            if (mergedJson.find(it.key()) != mergedJson.end()) {
+                // Duplicate key found, throw an error
+                throw std::runtime_error("Duplicate key found: " + it.key());
+            }
+            mergedJson[it.key()] = it.value();
+        }
+    }
+    return mergedJson;
+}
+
+std::vector<json> parseJsonBlocks(const std::string& inputString) {
+    std::vector<json> parsedJsonBlocks;
+    std::istringstream inputStream(inputString); // Create a string stream
 
     std::string line;
-    while (std::getline(shaderFile, line))
-    {
-        if (!parsingGLSL)
-        {
-            // Check for the beginning of the JSON metadata block
-            if (line.find("/*{") == 0)
-            {
-                parsingGLSL = true;
-                jsonBlock = "";
-            }
-        }
-        else
-        {
-            // Check for the end of the JSON metadata block
-            if (line.find("}*/") == 0)
-            {
-                parsingGLSL = false;
-                // Parse the JSON metadata block manually
-                if (!jsonBlock.empty())
-                {
-                    std::istringstream jsonStream(jsonBlock);
-                    json metadata;
-                    try
-                    {
-                        jsonStream >> metadata;
-                    }
-                    catch (const std::exception &e)
-                    {
-                        std::cerr << "Error parsing JSON metadata: " << e.what() << std::endl;
-                        jsonBlock = ""; // Clear the JSON block
-                        continue;
-                    }
+    std::string jsonBlock;
+    bool inBlock = false;
+    std::regex commentPattern(R"(//.*)");
 
-                    // Extract input parameters from the JSON block
-                    if (metadata.count("INPUTS") > 0)
-                    {
-                        const json &inputs = metadata["INPUTS"];
-                        for (const auto &input : inputs)
-                        {
-                            ISFParameter param;
-                            param.type = input["TYPE"];
-                            param.name = input["NAME"];
-                            param.description = input["LABEL"];
-                            param.value = input["DEFAULT"];
-                            param.minValue = input["MIN"];
-                            param.maxValue = input["MAX"];
-                            params.push_back(param);
-                        }
-                    }
-
-                    // Clear the JSON block
-                    jsonBlock = "";
+    while (std::getline(inputStream, line)) {
+        if (inBlock) {
+            // Check for the end of the JSON block
+            if (line.find("}*/") != std::string::npos) {
+                inBlock = false;
+                jsonBlock += line.substr(0, line.find("}*/") + 1); // Include the closing */
+                try {
+                    // Remove // comments within the JSON block
+                    jsonBlock = std::regex_replace(jsonBlock, commentPattern, "");
+                    // Parse the JSON block
+                    json parsedJson = json::parse(jsonBlock);
+                    parsedJsonBlocks.push_back(parsedJson);
+                } catch (const std::exception& e) {
+                    std::cerr << "Error parsing JSON: " << e.what() << std::endl;
                 }
-            }
-            else
-            {
-                // Append the line to the JSON block
+                jsonBlock.clear();
+            } else {
                 jsonBlock += line + "\n";
             }
+        } else if (line.find("/*{") != std::string::npos) {
+            inBlock = true;
+            jsonBlock = line.substr(line.find("/*{") + 3) + "\n"; // Include the opening /*{
         }
     }
 
-    shaderFile.close();
-    return params;
+    return parsedJsonBlocks;
+}
+
+// Function to construct ISFParameter objects from a JSON block
+std::vector<ISFParameter> constructParametersFromJson(const json &mergedJson)
+{
+    std::vector<ISFParameter> params; // Vector to store ISFParameter objects
+
+    // Check if the JSON contains input parameters under the "INPUTS" field
+    if (mergedJson.count("INPUTS") > 0)
+    {
+        // Extract the input parameters from the JSON
+        const json &inputs = mergedJson["INPUTS"];
+
+        // Iterate through the input parameters
+        for (const auto &input : inputs)
+        {
+            ISFParameter param; // Create a new ISFParameter object
+
+            // Extract and assign values from the JSON
+            param.type = input["TYPE"];             // Parameter data type
+            param.name = input["NAME"];             // Parameter name
+            param.description = input["LABEL"];     // Parameter description (label)
+            param.value = input["DEFAULT"];         // Default parameter value
+            param.minValue = input["MIN"];          // Minimum parameter value
+            param.maxValue = input["MAX"];          // Maximum parameter value
+
+            // Add the constructed ISFParameter object to the vector
+            params.push_back(param);
+        }
+    }
+    return params; // Return the vector of ISFParameter objects
 }
 
 // Define a mapping from ISF parameter types to ImGui widget constructors
 const std::unordered_map<std::string, std::function<void(const ISFParameter &)>> widgetConstructors = {
-    {"float", [](const ISFParameter &param)
+ /*   {"float", [](const ISFParameter &param)
      { ImGui::SliderFloat(param.name.c_str(), &param.value, param.minValue, param.maxValue); }},
     {"int", [](const ISFParameter &param)
      { ImGui::SliderInt(param.name.c_str(), reinterpret_cast<int *>(&param.value), static_cast<int>(param.minValue), static_cast<int>(param.maxValue)); }},
     {"bool", [](const ISFParameter &param)
-     { ImGui::Checkbox(param.name.c_str(), reinterpret_cast<bool *>(&param.value)); }},
+     { ImGui::Checkbox(param.name.c_str(), reinterpret_cast<bool *>(&param.value)); }}, */
     {"string", [](const ISFParameter &param)
      {
          char inputBuffer[256]; // Adjust the buffer size as needed
-         strncpy(inputBuffer, param.value.c_str(), sizeof(inputBuffer));
+ //      strncpy(inputBuffer, param.value.c_str(), sizeof(inputBuffer));
          if (ImGui::InputText(param.name.c_str(), inputBuffer, sizeof(inputBuffer)))
          {
-             param.value = inputBuffer;
+  //           param.value = inputBuffer;
          }
      }},
     {"event", [](const ISFParameter &param)
@@ -113,6 +142,7 @@ const std::unordered_map<std::string, std::function<void(const ISFParameter &)>>
              // Handle the event when the button is pressed
          }
      }},
+     /*
     {"point2D", [](const ISFParameter &param)
      { ImGui::DragFloat2(param.name.c_str(), &param.value.x); }},
     {"point3D", [](const ISFParameter &param)
@@ -122,16 +152,16 @@ const std::unordered_map<std::string, std::function<void(const ISFParameter &)>>
          ImVec4 color(param.value, 0.0f, 0.0f, 1.0f); // Assuming RGBA format
          if (ImGui::ColorEdit4(param.name.c_str(), &color.x))
          {
-             param.value = color.x;
+          //   param.value = color.x;
          }
-     }},
+     }},*/
     {"image", [](const ISFParameter &param)
      {
          // Assuming you have an image preview widget for selecting an image
-         if (ImGui::ImageButton(imageTextureID, ImVec2(50, 50)))
-         {
+        // if (ImGui::ImageButton(imageTextureID, ImVec2(50, 50)))
+        // {
              // Handle image selection or input
-         }
+        // }
      }},
     {"audio", [](const ISFParameter &param)
      {
@@ -153,7 +183,7 @@ const std::unordered_map<std::string, std::function<void(const ISFParameter &)>>
              bool isChecked = (param.value != 0.0f);
              if (ImGui::Checkbox(param.name.c_str(), &isChecked))
              {
-                 param.value = isChecked ? 1.0f : 0.0f; // Update the parameter value based on checkbox state
+                 //param.value = isChecked ? 1.0f : 0.0f; // Update the parameter value based on checkbox state
              }
          }
      }},

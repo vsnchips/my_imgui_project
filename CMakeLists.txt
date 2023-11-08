@@ -54,10 +54,7 @@ else()
 endif()
 
 
-
 ########### IMGUI! ##################
-# Include the subdirectory
-
 # Define the header files for ImGui
 set(IMGUI_HEADERS
     extern/imgui/imgui.h
@@ -80,11 +77,22 @@ set(IMGUI_SOURCES
 # Create the ImGui library target
 add_library(ImGui STATIC ${IMGUI_SOURCES} ${IMGUI_HEADERS})
 
+# Include the root directory of ImGui as an INTERFACE include directory
+target_include_directories(ImGui PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui
+    ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/backends
+    ${GLFW_INCLUDE_DIRS}
+)
+target_include_directories(ImGui INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui
+)
+target_link_libraries(ImGui ${GLFW_LIBRARIES})
 
-########### JSON! ##################
+
+########### JSON! ##############################################
 # ChatGPT says to add the include path literally, first.
 # Set the path to the nlohmann/json library
-set(JSON_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/extern/json/include")
+set(JSON_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extern/json/include")
 
 # Typically you don't care so much for a third party library's tests to be
 # run from your own project's code.
@@ -100,24 +108,20 @@ set(JSON_Install OFF CACHE INTERNAL "")
 # include(...) for pulling in other CMake projects anyways.
 add_subdirectory(extern/json)
 
-# Include the root directory of ImGui as an INTERFACE include directory
-target_include_directories(ImGui PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui
-    ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/backends
-    ${GLFW_INCLUDE_DIRS}
-)
-target_include_directories(ImGui INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui
-)
-target_link_libraries(ImGui ${GLFW_LIBRARIES})
-
+############## Add next libs here #####################
 #TODO:
 #Find and link imnodes
+
+
+
+############### LINK UP THE EXE ######################
+
 target_include_directories(twoWindows PRIVATE
 ${GLFW_INCLUDE_DIRS}
 ${GLEW_INCLUDE_DIRS}
 ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/include
 ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/src
+${JSON_INCLUDE_DIR}
 )
 
 target_compile_definitions(twoWindows PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLEW)

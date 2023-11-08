@@ -70,8 +70,6 @@
 }
 */
 
-#version 330 core
-
 ////////////////////////////////////////////////////////////
 // UltimateKaliCircuits  by mojovideotech
 //
@@ -90,7 +88,7 @@
 #define 	rctwpi  0.159154943091895	// reciprocal of twpi, 1/twpi
 #define		r36		0.027777777777778
 
-/*
+
 vec3 color = vec3(0.0,0.5,0.0);
 float S = glow;
 float T = rate*TIME*0.005;
@@ -119,10 +117,8 @@ void formula(vec2 z, float f)
 			 *smoothstep(0.0, 0.5, vec3(f, isf_FragNormCoord));
 }
 
-in vec2 TexCoord;
 void main()
 {
-
 	vec2 pos = 2.0 * gl_FragCoord.xy - RENDERSIZE.xy;
 	pos /= max(RENDERSIZE.x,RENDERSIZE.y);
 	vec2 uv = pos-center;
@@ -139,17 +135,7 @@ void main()
 		formula(uv+aauv*pix, c);
 	}
 	S *= r36, color *= r36;
-
-    vec3 colo = mix(vec3(0.025), color, S)*(1.5-length(pos));
+	vec3 colo = mix(vec3(0.025), color, S)*(1.5-length(pos));
 	colo *= vec3(1.2, 1.1, 1.0);
-
-    colo = vec3(TexCoord/100,1);
 	gl_FragColor = vec4(colo, 1.0);
-}*/
-
-in vec2 TexCoord;
-out vec4 FragColor;
-void main()
-{
-	FragColor = vec4(TexCoord,0.0,0.1);
 }

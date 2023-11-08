@@ -6,10 +6,10 @@ project(GLFWImGuiTwoWindows)
 set(CMAKE_CXX_STANDARD 11)
 
 # (Optional) Set the C and C++ compilers to Clang
-#set(CMAKE_C_COMPILER "clang")
-#set(CMAKE_CXX_COMPILER "clang++")
-set(CMAKE_C_COMPILER "gcc")
-set(CMAKE_CXX_COMPILER "g++")
+#set(CMAKE_C_COMPILER "/usr/bin/clang")
+#set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
+#set(CMAKE_C_COMPILER "gcc")
+#set(CMAKE_CXX_COMPILER "g++")
 
 # Include custom CMake modules
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules")
@@ -26,10 +26,7 @@ file(GLOB OPERATORS_SOURCE_FILES operators/*.cpp)
 target_sources(twoWindows PRIVATE ${OPERATORS_SOURCE_FILES})
 
 
-
-########### IMGUI! ##################
-# Include the subdirectory
-
+########### GLFW! ##################
 #Find and link GLFW
 find_package(GLFW REQUIRED)
 if (GLFW_FOUND)
@@ -38,6 +35,7 @@ else()
     message(FATAL_ERROR "GLFW not found. Please install GLFW or specify its location.")
 endif()
 
+########### GLEW! ##################
 # Find and link GLEW
 find_package(GLEW REQUIRED)
 if (GLEW_FOUND)
@@ -47,6 +45,7 @@ else()
 endif()
 
 
+########### OPENGL! ##################
 find_package(OpenGL REQUIRED)
 if (OpenGL_FOUND)
     message(STATUS "Found OpenGL: ${OPENGL_INCLUDE_DIRS}, ${GL}, ${OPENGL_LIBRARIES}")
@@ -55,6 +54,9 @@ else()
 endif()
 
 
+
+########### IMGUI! ##################
+# Include the subdirectory
 
 # Define the header files for ImGui
 set(IMGUI_HEADERS
@@ -77,6 +79,26 @@ set(IMGUI_SOURCES
 
 # Create the ImGui library target
 add_library(ImGui STATIC ${IMGUI_SOURCES} ${IMGUI_HEADERS})
+
+
+########### JSON! ##################
+# ChatGPT says to add the include path literally, first.
+# Set the path to the nlohmann/json library
+set(JSON_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/extern/json/include")
+
+# Typically you don't care so much for a third party library's tests to be
+# run from your own project's code.
+set(JSON_BuildTests OFF CACHE INTERNAL "")
+
+# If you only include this third party in PRIVATE source files, you do not
+# need to install it when your main project gets installed.
+set(JSON_Install OFF CACHE INTERNAL "")
+
+# Don't use include(nlohmann_json/CMakeLists.txt) since that carries with it
+# unintended consequences that will break the build.  It's generally
+# discouraged (although not necessarily well documented as such) to use
+# include(...) for pulling in other CMake projects anyways.
+add_subdirectory(extern/json)
 
 # Include the root directory of ImGui as an INTERFACE include directory
 target_include_directories(ImGui PRIVATE

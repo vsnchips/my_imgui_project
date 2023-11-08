@@ -3,10 +3,23 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-// #include "ISFParameters.hpp" // Include your ISF parameter handling functions
 
-ISFRenderer::ISFRenderer() : shaderProgram(0), timer(0.0f), VAO(0), VBO(0), EBO(0)
+#include <filesystem>
+#include <chrono>
+#include <thread>
+#include <ctime>
+
+// #include "ISFParameters.hpp" // Include your ISF parameter handling functions
+ISFRenderer::ISFRenderer(const std::string& isfPath) :
+ shaderPath(isfPath), shaderProgram(0),
+ timer(0.0f), VAO(0), VBO(0), EBO(0),
+ isfWatcher( isfPath, [&](){ shouldReloadShader.store(true); } )
 {
+    std::cout <<"Created a FileWatcher for ISF Shader " << shaderPath <<std::endl;
+
+    // Initialize ISF parameters
+    // ISFParameters::parseISFShaderAndDisplayParams(shaderPath);
+
     // Create and initialize the quad geometry
 
     // Define the indices for rendering a quad
@@ -24,8 +37,13 @@ ISFRenderer::ISFRenderer() : shaderProgram(0), timer(0.0f), VAO(0), VBO(0), EBO(
     };
 
     glGenVertexArrays(1, &VAO);
+
+    std:: cout << "VAO: " << VAO << std::endl;
+
     glGenBuffers(1, &VBO);
+    std:: cout << "VAO: " << VAO << std::endl;
     glGenBuffers(1, &EBO);
+    std:: cout << "VAO: " << VAO << std::endl;
 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -52,38 +70,26 @@ ISFRenderer::~ISFRenderer()
 }
 
 // ISFRenderer.cpp
-ISFRenderer* ISFRenderer::createAndLoadISFShader(const std::string& shaderPath) {
-    ISFRenderer* renderer = new ISFRenderer();
+ISFRenderer* ISFRenderer::createRendererAndLoadShader(const std::string& shaderPath) {
+    std::cout << "Creating a Renderer" << std::endl;
+    ISFRenderer* renderer = new ISFRenderer(shaderPath);
 
-    std::cout << "Loading Shader " << shaderPath << std::endl;
-
-    // Load and compile the ISF shader program
-    renderer->compileISFShader(shaderPath);
-    if (renderer->shaderProgram == 0) {
-        std::cerr << "Failed to load ISF shader: " << shaderPath << std::endl;
-    }
+      if (renderer->shaderProgram == 0) {
+          std::cerr << "Failed to load ISF shader: " << shaderPath << std::endl;
+      }
     return renderer;
 }
 
-
-void ISFRenderer::loadISFShader(const std::string &shaderPath)
-{
-    std::cout <<"Loading Shader " << shaderPath <<std::endl;
-
-    // Load and compile the ISF shader program
-    compileISFShader(shaderPath);
-
-
-    // Initialize ISF parameters
-    // ISFParameters::parseISFShaderAndDisplayParams(shaderPath);
-}
-
-void ISFRenderer::render()
-{
-    std::cout << "rendering" << std::endl;
+void ISFRenderer::render() {
+    // Check if shader reload is needed
+    if (shouldReloadShader.load()) {
+        loadAndCompileISF(shaderPath);
+        // Reset the flag, regardless of the result of the load attempt.
+        shouldReloadShader.store(false);
+    }
 
     // Use the ISF shader program
-    if(shaderProgram) glUseProgram(shaderProgram);
+    if (shaderProgram) glUseProgram(shaderProgram);
 
     // Update ISF shader uniforms here (e.g., time, other parameters)
     updateISFUniforms();
@@ -121,9 +127,9 @@ bool checkProgramLinking(GLuint program) {
     }
     return true;
 }
-void ISFRenderer::compileISFShader(const std::string& shaderPath) {
+void ISFRenderer::loadAndCompileISF(const std::string& shaderPath) {
     // Load and compile the ISF shader code (you'll need to implement this)
-    std::string shaderCode = loadShaderCode(shaderPath);
+    std::string shaderCode = readShaderSource(shaderPath);
     const char* shaderCodePtr = shaderCode.c_str();
 
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
@@ -139,10 +145,11 @@ void ISFRenderer::compileISFShader(const std::string& shaderPath) {
         void main() {
             gl_Position = vec4(aPos, 1.0);
             TexCoord = aTexCoord;
+            //gl_FragCoord = aTexCoord;
         }
     )";
 
-        glShaderSource(vertexShader, 1, &defaultVertexShaderCode, nullptr);
+    glShaderSource(vertexShader, 1, &defaultVertexShaderCode, nullptr);
     glCompileShader(vertexShader);
 
     // Check for vertex shader compilation errors
@@ -183,9 +190,10 @@ void ISFRenderer::compileISFShader(const std::string& shaderPath) {
     // Initialize ISF parameters
     // ISFParameters::parseISFShaderAndDisplayParams(shaderPath);
 
+
 }
 
-std::string ISFRenderer::loadShaderCode(const std::string &filePath)
+std::string ISFRenderer::readShaderSource(const std::string &filePath)
 {
     std::ifstream shaderFile(filePath);
     if (!shaderFile)
@@ -211,6 +219,7 @@ void ISFRenderer::updateISFUniforms()
     // Update ISF shader uniforms here
     // For example, you can set a time uniform to create animations
     glUniform1f(glGetUniformLocation(shaderProgram, "time"), timer);
+    glUniform2f(glGetUniformLocation(shaderProgram, "RENDERSIZE"), 1920, 1080); // Replace 'width' and 'height' with your framebuffer dimensions
 
     /*
     // You can set other ISF parameters here using your ISFParameters namespace

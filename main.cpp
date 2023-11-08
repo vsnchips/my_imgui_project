@@ -40,7 +40,7 @@ void handleFileDrop(GLFWwindow* window, int count, const char* paths[]) {
         if (renderer) {
             delete renderer; // Clean up the existing renderer, if any
         }
-        renderer = ISFRenderer::createAndLoadISFShader(paths[0]);
+        renderer = ISFRenderer::createRendererAndLoadShader(paths[0]);
     }
 }
 
@@ -140,6 +140,10 @@ int main()
 #pragma endregion
 
 #pragma region main loop
+
+        glClearColor(0.2f, 0.f, 0.2f, 0.5f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
     while (!glfwWindowShouldClose(window1))
     {
         glfwPollEvents();
@@ -148,8 +152,10 @@ int main()
         glfwGetFramebufferSize(window1, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        //glEnable(GL_BLEND);
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glClearColor(0.2f, 0.f, 0.2f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT);

@@ -120,7 +120,7 @@ std::vector<json> parseJsonBlocks(const std::string& inputString) {
 // Function to construct ISFParameter objects from a JSON block
 std::vector<ISFParameter> constructParametersFromJson(const json &mergedJson)
 {
-    std::vector<ISFParameter> params; // Vector to store ISFParameter objects
+    std::vector<ISFParameter> params;// Vector to store ISFParameter objects
 
     // Check if the JSON contains input parameters under the "INPUTS" field
     if (mergedJson.count("INPUTS") > 0)
@@ -135,11 +135,16 @@ std::vector<ISFParameter> constructParametersFromJson(const json &mergedJson)
 
             // Extract and assign values from the JSON
             param.type = input["TYPE"];             // Parameter data type
+            std::cout << param.type << std::endl;
             param.name = input["NAME"];             // Parameter name
+            std::cout << param.name << std::endl;
             param.description = input["LABEL"];     // Parameter description (label)
             param.value = input["DEFAULT"];         // Default parameter value
+            std::cout << param.value << std::endl;
             param.minValue = input["MIN"];          // Minimum parameter value
+            std::cout << param.minValue << std::endl;
             param.maxValue = input["MAX"];          // Maximum parameter value
+            std::cout << param.maxValue << std::endl;
 
             // Add the constructed ISFParameter object to the vector
             params.push_back(param);

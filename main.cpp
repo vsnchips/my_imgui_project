@@ -7,11 +7,19 @@
 #include <iostream>
 #include <sstream>
 
+#include "modules/GuiManager.hpp"
+#include "modules/inputhandler.hpp"
 #include "operators/isfRenderer.hpp"
+
 
 // Function to create ImGui dialogs
 void DoAllTheImGuis()
 {
+    // Test Widgets
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
     ImGui::SetNextWindowBgAlpha(0.5f); // Set the alpha value for the window background
 
     ImGui::Begin("Window Dialog");
@@ -19,6 +27,13 @@ void DoAllTheImGuis()
 
     ImGui::Text("I am a Dialog");
     ImGui::End();
+
+    // Actual Widgets
+    GuiManager::render();
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 }
 
 static void glfw_error_callback(int error, const char *description)
@@ -26,18 +41,20 @@ static void glfw_error_callback(int error, const char *description)
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
-ISFRenderer* renderer = nullptr;
+ISFRenderer *renderer = nullptr;
 // Callback function to handle dropped files
-void handleFileDrop(GLFWwindow* window, int count, const char* paths[]) {
-
-    if (count > 0) {
+void handleFileDrop(GLFWwindow *window, int count, const char *paths[])
+{
+    if (count > 0)
+    {
         // Assuming only one file is dropped; you can handle multiple files if needed
         std::string shaderPath = paths[0];
 
-        std::cout << "Drag/Drop recieved path " << shaderPath <<std::endl;
+        std::cout << "Drag/Drop recieved path " << shaderPath << std::endl;
 
         // Create the ISFRenderer and load the shader
-        if (renderer) {
+        if (renderer)
+        {
             delete renderer; // Clean up the existing renderer, if any
         }
         renderer = ISFRenderer::createRendererAndLoadShader(paths[0]);
@@ -63,8 +80,8 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // Required on Mac
 #else
-	// GL 3.0 + GLSL 130
-	const char *glsl_version = "#version 130";
+    // GL 3.0 + GLSL 130
+    const char *glsl_version = "#version 130";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
@@ -77,8 +94,6 @@ int main()
 
     // Request an alpha (transparency) channel
     glfwWindowHint(GLFW_ALPHA_BITS, 8); // 8 bits for alpha channel
-
-
 
 #pragma endregion
 #pragma region create window
@@ -122,7 +137,7 @@ int main()
     io.DisplaySize.x = static_cast<float>(screen_width);
     io.DisplaySize.y = static_cast<float>(screen_height);
 
-  #pragma region init imgui opengl renderer for window1
+#pragma region init imgui opengl renderer for window1
 
     // Initialize ImGui OpenGL3 renderer
     if (!ImGui_ImplOpenGL3_Init(glsl_version))
@@ -136,17 +151,24 @@ int main()
         std::cout << "ImGui_ImplGlfw_InitForOpenGL failed";
         return 1;
     }
-  #pragma endregion
+#pragma endregion
 #pragma endregion
 
 #pragma region main loop
 
-        glClearColor(0.2f, 0.f, 0.2f, 0.5f);
-        glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(0.2f, 0.f, 0.2f, 0.5f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     while (!glfwWindowShouldClose(window1))
     {
         glfwPollEvents();
+
+        InputHandler::update();
+
+
+
+
+        // Window time
 
         int display_w, display_h;
         glfwGetFramebufferSize(window1, &display_w, &display_h);
@@ -154,26 +176,20 @@ int main()
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-        //glEnable(GL_BLEND);
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        // glEnable(GL_BLEND);
+        // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glClearColor(0.2f, 0.f, 0.2f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Check if the renderer exists and render the quad
-        if (renderer) {
+        if (renderer)
+        {
             renderer->render();
         }
 
         // ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-
         DoAllTheImGuis(); // Pass window ID 1
-
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         glfwSwapBuffers(window1);
     }
@@ -186,5 +202,7 @@ int main()
     glfwTerminate();
 
     return 0;
+
 #pragma endregion
+
 }

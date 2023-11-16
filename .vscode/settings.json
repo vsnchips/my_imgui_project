@@ -80,6 +80,7 @@
         "unordered_set": "cpp",
         "utility": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "__availability": "cpp"
     }
 }

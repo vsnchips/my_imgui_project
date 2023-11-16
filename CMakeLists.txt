@@ -12,7 +12,11 @@ set(CMAKE_CXX_STANDARD 11)
 #set(CMAKE_CXX_COMPILER "g++")
 
 # Include custom CMake modules
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules")
+if(APPLE)
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules_apple")
+else()
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules_windows")
+endif()
 
 
 ##### MAIN TARGET SOURCES #########

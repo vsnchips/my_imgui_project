@@ -7,10 +7,12 @@ void error(int num, const char *msg, const char *path)
     fflush(stdout);
 }
 
+#define PORT "12345"
 LibloClient::LibloClient(const std::string &server_address, int port) {
     std::cout << "Creating new lo server" << std::endl;
-    /* start a new server on port 7770 */
-    lo_server_thread st = lo_server_thread_new("7770", error);
+
+    /* start a new server on port PORT */
+    lo_server_thread st = lo_server_thread_new(PORT, error);
 
     /* add method that will match any path and args */
     lo_server_thread_add_method(st, NULL, NULL, genericHandler, this);

@@ -9,7 +9,9 @@
 #include <map>
 
 #include "operators/isfRenderer.hpp"
+#include "widgets/curveWidget.hpp"
 
+CurveWidget cw;
 // Function to create ImGui dialogs
 void DoAllTheImGuis()
 {
@@ -20,6 +22,10 @@ void DoAllTheImGuis()
 
     ImGui::Text("I am a Dialog");
     ImGui::End();
+
+    ImGui::SetNextWindowBgAlpha(0.5f); // Set the alpha value for the window background
+    cw.Draw();
+
 }
 
 static void glfw_error_callback(int error, const char *description)

@@ -12,6 +12,7 @@ public:
 private:
     void DrawKeyframe(ImDrawList* draw_list, ImVec2 pos);
     std::vector<ImVec2> keyframes;
+        ImVec2 lineStart, lineEnd;
 };
 
 #endif // _CURVE_WIDGET_HPP

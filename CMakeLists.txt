@@ -128,11 +128,19 @@ set(JSON_Install OFF CACHE INTERNAL "")
 # include(...) for pulling in other CMake projects anyways.
 add_subdirectory(extern/json)
 
+############## OSC #####################
+
+find_package(liblo REQUIRED)
+set(OSC_INCLUDE_DIRS ${LIBLO_INCLUDE_DIRS})
+set(OSC_LIBS ${LIBLO_LIBRARY})
+
 ############## Add next libs here #####################
 #TODO:
 #Find and link imnodes
 
 
+#TODO:
+#Find and link imnodes
 
 ############### LINK UP THE EXE ######################
 
@@ -145,9 +153,16 @@ ${GLFW_INCLUDE_DIRS}
 ${GLEW_INCLUDE_DIRS}
 ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/include
 ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/src
+${LIBLO_INCLUDE_DIRS}
 ${JSON_INCLUDE_DIR}
 )
 
 target_compile_definitions(twoWindows PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLEW)
 # Link libraries
-target_link_libraries(twoWindows ImGui ${GLEW_LIBRARY} ${OPENGL_LIBRARIES} ${GLFW_LIBRARIES} )
+target_link_libraries(twoWindows
+  ImGui
+  ${GLEW_LIBRARY} 
+  ${OPENGL_LIBRARIES} 
+  ${GLFW_LIBRARIES}
+  ${OSC_LIBS}
+)

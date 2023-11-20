@@ -4,3 +4,6 @@
 [submodule "extern/json"]
 	path = extern/json
 	url = https://github.com/nlohmann/json
+[submodule "extern/liblo"]
+	path = extern/liblo
+	url = https://github.com/radarsat1/liblo.git

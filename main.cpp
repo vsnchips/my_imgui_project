@@ -8,8 +8,10 @@
 #include <sstream>
 #include <map>
 
-#include "operators/isfRenderer.hpp"
-#include "widgets/curveWidget.hpp"
+#include <isfRenderer.hpp>
+#include <curveWidget.hpp>
+
+#include <LibloClient.hpp>
 
 CurveWidget cw;
 // Function to create ImGui dialogs
@@ -80,6 +82,10 @@ std::map<std::string, std::string> parseArgs(int argc, char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
+    std::cout<< "hello world!"<<std::endl;
+
+    // Initialize the client with the OSC server's address and port
+    LibloClient lc("127.0.0.1", 12345);
 
     // Parse args
     auto args = parseArgs(argc, argv);
@@ -219,6 +225,9 @@ int main(int argc, char* argv[]) {
         ImGui::NewFrame();
 
         DoAllTheImGuis(); // Pass window ID 1
+
+        // Update the modules
+        lc.update();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

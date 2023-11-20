@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <map>
 
 #include "operators/isfRenderer.hpp"
 
@@ -26,7 +27,17 @@ static void glfw_error_callback(int error, const char *description)
     fprintf(stderr, "Glfw Error %d: %s\n", error, description);
 }
 
+
 ISFRenderer* renderer = nullptr;
+void handleISFFile(std::string file){
+
+        // Create the ISFRenderer and load the shader
+        if (renderer) {
+            delete renderer; // Clean up the existing renderer, if any
+        }
+        renderer = ISFRenderer::createRendererAndLoadShader(file);
+}
+
 // Callback function to handle dropped files
 void handleFileDrop(GLFWwindow* window, int count, const char* paths[]) {
 
@@ -36,16 +47,44 @@ void handleFileDrop(GLFWwindow* window, int count, const char* paths[]) {
 
         std::cout << "Drag/Drop recieved path " << shaderPath <<std::endl;
 
-        // Create the ISFRenderer and load the shader
-        if (renderer) {
-            delete renderer; // Clean up the existing renderer, if any
-        }
-        renderer = ISFRenderer::createRendererAndLoadShader(paths[0]);
+        handleISFFile( shaderPath );
     }
 }
 
-int main()
-{
+std::map<std::string, std::string> parseArgs(int argc, char* argv[]) {
+    std::map<std::string, std::string> args;
+
+    for (int i = 1; i < argc; i += 2) {
+        std::string key = argv[i];
+        std::string value = "";
+
+        if (i + 1 < argc) {
+            value = argv[i + 1];
+        }
+
+        if (key[0] == '-') {
+            args[key] = value;
+        } else {
+            std::cerr << "Invalid argument: " << key << std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    return args;
+}
+
+int main(int argc, char* argv[]) {
+
+    // Parse args
+    auto args = parseArgs(argc, argv);
+
+    //Use args
+    std::string isfFile;
+    if (args.find("--file") != args.end()) {
+        std::cout << "File: " << args["--file"] << std::endl;
+        isfFile = args["--file"];
+    }
+
 #pragma region init glfw
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
@@ -143,6 +182,9 @@ int main()
 
         glClearColor(0.2f, 0.f, 0.2f, 0.5f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+    // handle file drop if one has been passed
+    if ( !isfFile.empty() ) handleISFFile(isfFile);
 
     while (!glfwWindowShouldClose(window1))
     {

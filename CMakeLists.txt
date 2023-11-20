@@ -22,12 +22,28 @@ endif()
 ##### MAIN TARGET SOURCES #########
 # Create the executable target
 add_executable(twoWindows main.cpp)
+# Glob source files in the specified directories and their subdirectories
+file(GLOB_RECURSE MODULE_SOURCES "modules/*.cpp")
+message("MODULE_SOURCES " ${MODULE_SOURCES})
 
-# Glob source files in the 'operators/' directory
-file(GLOB OPERATORS_SOURCE_FILES operators/*.cpp)
+file(GLOB_RECURSE OPERATOR_SOURCES "operators/*.cpp")
+message("OPERATOR_SOURCES" ${OPERATOR_SOURCES})
+
+file(GLOB_RECURSE TYPE_SOURCES "types/*.cpp")
+message("TYPE_SOURCES " ${TYPE_SOURCES})
+
+file(GLOB_RECURSE WIDGET_SOURCES "widgets/*.cpp")
+message("WIDGET_SOURCES " ${WIDGET_SOURCES})
+
+set(ALL_SOURCES
+    ${MODULE_SOURCES}
+    ${OPERATOR_SOURCES}
+    ${TYPE_SOURCES}
+    ${WIDGET_SOURCES}
+)
 
 # Add the globbed source files to the target
-target_sources(twoWindows PRIVATE ${OPERATORS_SOURCE_FILES})
+target_sources(twoWindows PRIVATE ${ALL_SOURCES})
 
 
 ########### GLFW! ##################
@@ -121,6 +137,10 @@ add_subdirectory(extern/json)
 ############### LINK UP THE EXE ######################
 
 target_include_directories(twoWindows PRIVATE
+"operators"
+"modules"
+"types"
+"widgets"
 ${GLFW_INCLUDE_DIRS}
 ${GLEW_INCLUDE_DIRS}
 ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/include

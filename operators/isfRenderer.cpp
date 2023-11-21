@@ -13,10 +13,12 @@
 
 // #include "ISFParameters.hpp" // Include your ISF parameter handling functions
 ISFRenderer::ISFRenderer(const std::string &isfPath) : shaderPath(isfPath), shaderProgram(0),
-                                                       timer(0.0f), VAO(0), VBO(0), EBO(0),
+                                                       timer(0.0f),
                                                        isfWatcher(isfPath, [&]()
                                                                   { shouldReloadShader.store(true); })
 {
+    FullScreenQuad::Init();
+
     std::cout << "Created a FileWatcher for ISF Shader " << shaderPath << std::endl;
     shouldReloadShader.store(true);
     registerWidget(this);
@@ -25,11 +27,6 @@ ISFRenderer::ISFRenderer(const std::string &isfPath) : shaderPath(isfPath), shad
 ISFRenderer::~ISFRenderer()
 {
     glDeleteProgram(shaderProgram);
-
-    // Delete quad geometry buffers
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
 }
 
 // ISFRenderer.cpp
@@ -66,43 +63,9 @@ void ISFRenderer::render()
     renderQuad();
 }
 
-// Utility function to check shader compilation errors
-bool checkShaderCompilation(GLuint shader)
-{
-    GLint success;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (!success)
-    {
-        GLint logLength;
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &logLength);
-        std::vector<GLchar> errorLog(logLength);
-        glGetShaderInfoLog(shader, logLength, nullptr, errorLog.data());
-        std::cerr << "Shader compilation error: " << errorLog.data() << std::endl;
-        return false;
-    }
-    return true;
-}
-
-// Utility function to check program linking errors
-bool checkProgramLinking(GLuint program)
-{
-    GLint success;
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
-    if (!success)
-    {
-        GLint logLength;
-        glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
-        std::vector<GLchar> errorLog(logLength);
-        glGetProgramInfoLog(program, logLength, nullptr, errorLog.data());
-        std::cerr << "Program linking error: " << errorLog.data() << std::endl;
-        return false;
-    }
-    return true;
-}
 
 void ISFRenderer::loadAndCompileISF(const std::string &shaderPath)
 {
-
     executeWithExceptionHandling([this, shaderPath]()
     {
         // Load and compile the ISF shader code (you'll need to implement this)
@@ -200,6 +163,8 @@ void ISFRenderer::updateISFUniforms()
 
 void ISFRenderer::renderQuad()
 {
+    FullScreenQuad::RenderQuad();
+    /*
     // Bind the VAO before rendering
     glBindVertexArray(VAO);
 
@@ -210,7 +175,7 @@ void ISFRenderer::renderQuad()
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     // Unbind the VAO after rendering
-    glBindVertexArray(0);
+    glBindVertexArray(0);*/
 }
 
 void ISFRenderer::setError(const std::string &errorMsg)

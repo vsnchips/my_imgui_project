@@ -1,12 +1,12 @@
-#include <iostream>
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include "Processing.NDI.Lib.h"
-
-#include <imgui.h>
 
 #include <NDISender.hpp>
+
+#include <iostream>
+
+// #include <GL/glew.h>
+ #include <GLFW/glfw3.h>
+
+#include <imgui.h>
 
 #include <renderable.hpp>
 
@@ -30,6 +30,7 @@ void NDISender::closeNDI()
 
 NDISender::~NDISender()
 {
+    closeNDI();
 }
 
 // Function to initialize NDI

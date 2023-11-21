@@ -29,7 +29,23 @@ public:
 protected:
     // Method to execute a lambda with exception handling
     template <typename Lambda>
-    void executeWithExceptionHandling(Lambda &&lambda);
+    void executeWithExceptionHandling(Lambda &&lambda)
+    {
+        try
+        {
+            lambda();
+        }
+        catch (const std::exception &e)
+        {
+            // Handle the exception
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+        catch (...)
+        {
+            // Handle any other exceptions (not derived from std::exception)
+            std::cerr << "An unknown error occurred." << std::endl;
+        }
+    }
 
     static std::vector<WidgetOp *> registeredWidgets;
 };

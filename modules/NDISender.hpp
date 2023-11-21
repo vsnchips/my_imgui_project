@@ -3,8 +3,12 @@
 
 #include <WidgetOp.hpp>
 
-class NDISender : public WidgetOp
-{
+#include <GL/glew.h>
+#include <OpenGL/gl.h>
+
+#include "Processing.NDI.Lib.h"
+
+class NDISender : public WidgetOp {
 public:
     void update();
     void doGui() override;

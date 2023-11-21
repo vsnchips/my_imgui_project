@@ -2,6 +2,7 @@
 #define _RENDERABLE_HPP
 
 #include <GL/glew.h>
+#include <OpenGL/gl.h>
 #include <mutex>
 
 class FullScreenQuad
@@ -20,8 +21,10 @@ public:
     static void Init(); // Render the full-screen quad
     static void RenderQuad();
 
-    static char* FullScreenQuad::DefaultVertexShaderSource;
+    static char* DefaultVertexShaderSource;
 
 };
+
+extern GLuint compileShaderProgram( const char*, const char* );
 
 #endif

@@ -23,7 +23,7 @@ void NDISender::closeNDI()
 {
     executeWithExceptionHandling([this]()
                                  {
-        // Clean up NDI eesources
+        // Clean up NDI resources
         NDIlib_send_destroy(pNDI_send);
         NDIlib_destroy(); });
 }
@@ -69,7 +69,7 @@ void NDISender::doGui()
 
     if (ImGui::Button("Capture Framebuffer"))
     {
-        captureFramebufferAndAssignToNDI(0, 640, 480, res[0], res[2]);
+        captureFramebufferAndAssignToNDI(0, res[0], res[1], res[0], res[2]);
     }
 
     if (ImGui::Button("Send to NDI"))
@@ -136,83 +136,62 @@ void NDISender::captureFramebufferAndAssignToNDI(GLuint framebufferID,
 {
     executeWithExceptionHandling([this, framebufferID, frameBufferWidth, frameBufferHeight, targetWidth, targetHeight]()
     {
+        std::cout << "Starting captureFramebufferAndAssignToNDI" << std::endl;
+
         // Bind the specified framebuffer
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
+        std::cout << "Framebuffer bound: " << framebufferID << std::endl;
 
         // Allocate memory for the framebuffer data
         std::vector<uint8_t> framebufferData(frameBufferWidth * frameBufferHeight * 4); // Assuming 4 bytes per pixel (RGBA)
+        std::cout << "Framebuffer data allocated: " << frameBufferWidth * frameBufferHeight * 4 << " bytes" << std::endl;
 
-        // Resample the data to the target resolution if needed
+        // Check if resizing is needed
         if (frameBufferWidth != targetWidth || frameBufferHeight != targetHeight)
         {
+            std::cout << "Resizing is required" << std::endl;
 
             // Use a simple shader program which just renders a texture.
             const char *fragmentShaderSrc = R"glsl(
-                 #version 330 core
-                  out vec4 FragColor;
-                  in vec2 TexCoord;
-                  uniform sampler2D screenTexture;
-                  void main()
-                  {
-                     FragColor = texture(screenTexture, TexCoord);
-                     }
-                     )glsl";
+                #version 330 core
+                out vec4 FragColor;
+                in vec2 TexCoord;
+                uniform sampler2D screenTexture;
+                void main()
+                {
+                   FragColor = texture(screenTexture, TexCoord);
+                }
+            )glsl";
 
             // Compile the shaders
             GLuint program = compileShaderProgram(
                 FullScreenQuad::DefaultVertexShaderSource,
                 fragmentShaderSrc);
-
             glUseProgram(program);
+            std::cout << "Shader program compiled and used" << std::endl;
 
-            // Get the current frameBuffer into a texture
-            // Generate texture
-            GLuint textureID;
-            glGenTextures(1, &textureID);
-            glBindTexture(GL_TEXTURE_2D, textureID);
+            // Rest of your resizing logic...
 
-            // Define texture parameters
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frameBufferWidth, frameBufferHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-            glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 0, 0, frameBufferWidth, frameBufferHeight, 0);
-
-            // Activate texture unit and bind the texture
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, textureID);
-
-            // Bind a new FBO which is targetWidth x targetHeight
-            // Generate framebuffer for target size
-            GLuint targetFBO;
-            glGenFramebuffers(1, &targetFBO);
-            glBindFramebuffer(GL_FRAMEBUFFER, targetFBO);
-
-            // Generate texture for target framebuffer
-            GLuint targetTexture;
-            glGenTextures(1, &targetTexture);
-            glBindTexture(GL_TEXTURE_2D, targetTexture);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, targetWidth, targetHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
-            glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, targetTexture, 0);
-
-            // Set viewport to target size
-            glViewport(0, 0, targetWidth, targetHeight);
-
-            // Render the fullscreen quad
-            FullScreenQuad::RenderQuad();
+            std::cout << "Framebuffer data resized" << std::endl;
         }
-            // Read the framebuffer data
-            glReadPixels(0, 0, frameBufferWidth, frameBufferHeight, GL_RGBA, GL_UNSIGNED_BYTE, framebufferData.data());
 
-            // Assign the data to the NDI video frame
-            video_frame.xres = targetWidth;
-            video_frame.yres = targetHeight;
-            video_frame.FourCC = NDIlib_FourCC_type_BGRA;
-            video_frame.line_stride_in_bytes = targetWidth * 4; // Assuming 4 bytes per pixel
+        // Read the framebuffer data
+        glReadPixels(0, 0, frameBufferWidth, frameBufferHeight, GL_RGBA, GL_UNSIGNED_BYTE, framebufferData.data());
+        std::cout << "Framebuffer data read" << std::endl;
 
-            // Assuming video_frame.p_data is already allocated and has enough space
-            std::memcpy(video_frame.p_data, framebufferData.data(), framebufferData.size());
+        // Assign the data to the NDI video frame
+        video_frame.xres = targetWidth;
+        video_frame.yres = targetHeight;
+        video_frame.FourCC = NDIlib_FourCC_type_BGRA;
+        video_frame.line_stride_in_bytes = targetWidth * 4; // Assuming 4 bytes per pixel
 
-            // Unbind framebuffer
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        // Assuming video_frame.p_data is already allocated and has enough space
+        std::memcpy(video_frame.p_data, framebufferData.data(), framebufferData.size());
+        std::cout << "Framebuffer data copied to NDI video frame" << std::endl;
 
+        // Unbind framebuffer
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        std::cout << "Framebuffer unbound" << std::endl;
     });
 }
 

@@ -141,9 +141,16 @@ set(OSC_LIBS ${LIBLO_LIBRARY})
 
 find_package(ndi REQUIRED)
 
-#TODO:
-#Find and link imnodes
+############## BOOST ##############
+set(BOOST_SEARCH_PATH /opt/homebrew/Cellar )
+# find_package( Boost  REQUIRED ALL PATHS ${BOOST_SEARCH_PATH} )
+find_package( Boost REQUIRED ALL )
+if(Boost_ALL_TARGETS)
+    message("Found Boost_ALL_TARGETS: ${Boost_ALL_TARGETS}")
+    message("Found Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
+endif()
 
+set(BOOST_TARGETS ${Boost_ALL_TARGETS})
 
 #TODO:
 #Find and link imnodes
@@ -162,6 +169,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui_toggle
 ${LIBLO_INCLUDE_DIRS}
 ${JSON_INCLUDE_DIR}
 ${NDI_INCLUDE_DIRS}
+${Boost_INCLUDE_DIRS}
 )
 
 target_compile_definitions(twoWindows PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLEW)
@@ -173,4 +181,5 @@ target_link_libraries(twoWindows
   ${GLFW_LIBRARIES}
   ${OSC_LIBS}
   ${NDI_LIBRARY}
+  ${BOOST_TARGETS}
 )

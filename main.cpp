@@ -11,6 +11,9 @@
 #include "operators/isfRenderer.hpp"
 #include "widgets/curveWidget.hpp"
 
+
+#include "theme.hpp"
+
 CurveWidget cw;
 // Function to create ImGui dialogs
 void DoAllTheImGuis()
@@ -181,6 +184,10 @@ int main(int argc, char* argv[]) {
         std::cout << "ImGui_ImplGlfw_InitForOpenGL failed";
         return 1;
     }
+
+    // ImGui Style!
+    SetupImGuiStyle();
+
   #pragma endregion
 #pragma endregion
 

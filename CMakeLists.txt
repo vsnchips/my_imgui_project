@@ -155,7 +155,7 @@ target_include_directories(twoWindows PRIVATE
 ${GLFW_INCLUDE_DIRS}
 ${GLEW_INCLUDE_DIRS}
 ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/include
-${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/src
+${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui_toggle
 ${LIBLO_INCLUDE_DIRS}
 ${JSON_INCLUDE_DIR}
 )

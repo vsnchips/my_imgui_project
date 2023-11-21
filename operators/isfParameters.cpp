@@ -11,6 +11,8 @@
 
 #include "nlohmann/json.hpp"
 
+#include <imgui_toggle.h>
+
 using json = nlohmann::json;
 
 // Private header
@@ -333,8 +335,11 @@ const std::unordered_map<std::string, std::function<void(ISFParameter &)>> widge
          // Assuming param.value is a std::variant and FloatParameterValue is one of the types
          if (auto *autoParam = std::get_if<BoolParameterValue>(&param.value))
          {
-             // Use the parameter's name as the label, and access the float value.
-             ImGui::Checkbox(param.name.c_str(), &(autoParam->value));
+             //ImGui::Checkbox(param.name.c_str(), &(autoParam->value));
+             ImGui::Toggle(param.name.c_str(), &(autoParam->value),
+             ImGuiToggleFlags_Animated |
+             ImGuiToggleFlags_Bordered |
+             ImGuiToggleFlags_Shadowed );
          }
      }},
     {"float", [](ISFParameter &param)

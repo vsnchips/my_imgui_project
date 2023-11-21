@@ -6,3 +6,5 @@ build/CMakeCache.txt build/CMakeFiles build/CMakeFiles/3.27.7 build/CMakeFiles/3
 Makefile
 .vs/*
 out/*
+liblo.dll
+extern/*

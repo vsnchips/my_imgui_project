@@ -2,10 +2,21 @@
   "CREDIT": "by mojovideotech",
   "CATEGORIES": [
   	"generator",
-    "2d"],
+    "2d"
+  ],
   "ISFVSN" : "2",
   "DESCRIPTION": "",
   "INPUTS": [
+	{
+		"NAME" : 	"toggledefaultTrue",
+		"TYPE" : 	"bool",
+		"DEFAULT" :	true
+	},
+	{
+		"NAME" : 	"toggledefaultFalse",
+		"TYPE" : 	"bool",
+		"DEFAULT" :	false
+	},
 	{
 		"NAME" : 	"center",
 		"TYPE" : 	"point2D",

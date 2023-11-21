@@ -209,7 +209,10 @@ std::vector<ISFParameter> constructParametersFromJson(const json &mergedJson)
 
     auto setBoolDefault = [](auto &param, const auto &defaultValue)
     {
-        param.initialise(BoolParameterValue{defaultValue.template get<bool>()});
+        BoolParameterValue parameterValue;
+        parameterValue.value = defaultValue.template get<bool>();
+        std::cout << "Boolean parameter value: " << parameterValue.value << std::endl;
+        param.initialise(parameterValue);
     };
 
     auto setEventDefault = [](auto &param, const auto &defaultValue)
@@ -257,29 +260,28 @@ std::vector<ISFParameter> constructParametersFromJson(const json &mergedJson)
         // Parse defaultValue and set it
     };
 
-    // Map type to default-setting function
-    std::map<std::type_index, std::function<void(ISFParameter &, nlohmann::json &)>> defaultSetterMap = {
-        {typeid(FloatParameterValue), setFloatDefault},
-        {typeid(Point2DParameterValue), setPoint2DDefault},
-        {typeid(ColorParameterValue), setColorDefault},
-        {typeid(ImageParameterValue), setImageDefault},
-        {typeid(LongParameterValue), setLongDefault},
-        {typeid(BoolParameterValue), setBoolDefault},
-        {typeid(EventParameterValue), setEventDefault},
-        {typeid(PopUpButtonParameterValue), setPopUpButtonDefault},
-        {typeid(RangeParameterValue), setRangeDefault},
-        {typeid(ColorAlphaParameterValue), setColorAlphaDefault},
-        {typeid(AudioParameterValue), setAudioDefault},
-        {typeid(AudioFFTParameterValue), setAudioFFTDefault},
-        {typeid(Matrix4x4ParameterValue), setMatrix4x4Default},
-        {typeid(Matrix3x3ParameterValue), setMatrix3x3Default},
-        {typeid(Matrix2x2ParameterValue), setMatrix2x2Default}
+    std::map<std::string, std::function<void(ISFParameter &, nlohmann::json &)>> defaultSetterMap = {
+        {"float", setFloatDefault},
+        {"point2d", setPoint2DDefault},
+        {"color", setColorDefault},
+        {"image", setImageDefault},
+        {"long", setLongDefault},
+        {"bool", setBoolDefault},
+        {"event", setEventDefault},
+        {"popupbutton", setPopUpButtonDefault},
+        {"range", setRangeDefault},
+        {"coloralpha", setColorAlphaDefault},
+        {"audio", setAudioDefault},
+        {"audiofft", setAudioFFTDefault},
+        {"matrix4x4", setMatrix4x4Default},
+        {"matrix3x3", setMatrix3x3Default},
+        {"matrix2x2", setMatrix2x2Default}
         // ... other types
     };
 
     auto setDefaultValue = [&](auto &param, const auto &defaultValue)
     {
-        auto it = defaultSetterMap.find(typeid(std::decay_t<decltype(param)>));
+        auto it = defaultSetterMap.find(param.type);
         if (it != defaultSetterMap.end())
         {
             it->second(param, defaultValue);
@@ -306,16 +308,18 @@ std::vector<ISFParameter> constructParametersFromJson(const json &mergedJson)
             std::cout << param.type << std::endl;
             param.name = input["NAME"];
 
+            // Store the properties
+            param.properties = input;
+
             if (input.contains("DEFAULT"))
             {
                 nlohmann::json defaultValue = input["DEFAULT"];
-                auto it = defaultSetterMap.find(typeid(param.value));
+                auto it = defaultSetterMap.find(param.type);
                 if (it != defaultSetterMap.end())
                 {
                     it->second(param, defaultValue);
                 }
             }
-
             params.push_back(param);
         }
     }
@@ -324,15 +328,27 @@ std::vector<ISFParameter> constructParametersFromJson(const json &mergedJson)
 
 // Define a mapping from ISF parameter types to ImGui widget constructors
 const std::unordered_map<std::string, std::function<void(ISFParameter &)>> widgetConstructors = {
-          {"float", [](ISFParameter &param)
-        {
-            // Assuming param.value is a std::variant and FloatParameterValue is one of the types
-            if (auto *floatParam = std::get_if<FloatParameterValue>(&param.value)) {
-                // Use the parameter's name as the label, and access the float value.
-                ImGui::SliderFloat(param.name.c_str(), &(floatParam->value), /*min */ 0 , /* max value */ 1);
-            }
-        }
-    },
+    {"bool", [](ISFParameter &param)
+     {
+         // Assuming param.value is a std::variant and FloatParameterValue is one of the types
+         if (auto *autoParam = std::get_if<BoolParameterValue>(&param.value))
+         {
+             // Use the parameter's name as the label, and access the float value.
+             ImGui::Checkbox(param.name.c_str(), &(autoParam->value));
+         }
+     }},
+    {"float", [](ISFParameter &param)
+     {
+         // Assuming param.value is a std::variant and FloatParameterValue is one of the types
+         if (auto *autoParam = std::get_if<FloatParameterValue>(&param.value))
+         {
+             // Use the parameter's name as the label, and access the float value.
+             ImGui::SliderFloat(param.name.c_str(),
+                                &(autoParam->value),
+                                param.properties["MIN"],
+                                param.properties["MAX"]);
+         }
+     }},
     /*   {"int", [](const ISFParameter &param)
         { ImGui::SliderInt(param.name.c_str(), reinterpret_cast<int *>(&param.value), static_cast<int>(param.minValue), static_cast<int>(param.maxValue)); }},
        {"bool", [](const ISFParameter &param)
@@ -366,7 +382,7 @@ const std::unordered_map<std::string, std::function<void(ISFParameter &)>> widge
          //   param.value = color.x;
         }
     }},*/
-    {"image", []( ISFParameter &param)
+    {"image", [](ISFParameter &param)
      {
          // Assuming you have an image preview widget for selecting an image
          // if (ImGui::ImageButton(imageTextureID, ImVec2(50, 50)))
@@ -374,13 +390,13 @@ const std::unordered_map<std::string, std::function<void(ISFParameter &)>> widge
          // Handle image selection or input
          // }
      }},
-    {"audio", []( ISFParameter &param)
+    {"audio", [](ISFParameter &param)
      {
          // Assuming you have an audio waveform display widget
          // and controls for audio input
          // Handle audio input and visualization
      }},
-    {"booleanOp", []( ISFParameter &param)
+    {"booleanOp", [](ISFParameter &param)
      {
          // Assuming you have a booleanOp parameter in your ISF shader
          // Example ISFParameter for booleanOp:
@@ -398,7 +414,7 @@ const std::unordered_map<std::string, std::function<void(ISFParameter &)>> widge
              }
          }
      }},
-    {"curve", []( ISFParameter &param)
+    {"curve", [](ISFParameter &param)
      {
          // Assuming you have a curve widget for selecting curves
          // and handles for curve manipulation

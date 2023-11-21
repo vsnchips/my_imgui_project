@@ -21,7 +21,7 @@ public:
         }
     }
 
-    std::string errorMessage;
+    std::string * errorMessage;
 
 private:
     // Method to execute a lambda with exception handling

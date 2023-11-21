@@ -138,6 +138,9 @@ set(OSC_INCLUDE_DIRS ${LIBLO_INCLUDE_DIRS})
 set(OSC_LIBS ${LIBLO_LIBRARY})
 
 ############## Add next libs here #####################
+
+find_package(ndi REQUIRED)
+
 #TODO:
 #Find and link imnodes
 
@@ -158,6 +161,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui/include
 ${CMAKE_CURRENT_SOURCE_DIR}/extern/imgui_toggle
 ${LIBLO_INCLUDE_DIRS}
 ${JSON_INCLUDE_DIR}
+${NDI_INCLUDE_DIRS}
 )
 
 target_compile_definitions(twoWindows PUBLIC IMGUI_IMPL_OPENGL_LOADER_GLEW)
@@ -168,4 +172,5 @@ target_link_libraries(twoWindows
   ${OPENGL_LIBRARIES}
   ${GLFW_LIBRARIES}
   ${OSC_LIBS}
+  ${NDI_LIBRARY}
 )

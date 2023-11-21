@@ -6,6 +6,8 @@
 
 #include <imgui.h>
 
+#include <NDISender.hpp>
+
 // Assume video_frame is a global variable of type NDIlib_video_frame_v2_t
 
 NDISender::NDISender()

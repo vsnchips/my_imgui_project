@@ -6,7 +6,6 @@ Makefile
 .vs/*
 out/*
 liblo.dll
-extern/*
 imgui.ini
 .DS_Store
 ./.DS_Store

@@ -82,10 +82,11 @@ set(IMGUI_HEADERS
     extern/imgui/imconfig.h
     extern/imgui/imgui_internal.h
     # Add other ImGui header files if needed
+    extern/imgui_toggle/imgui_toggle.h
 )
 
-# Define the source files for ImGui
-set(IMGUI_SOURCES
+# Define the source files for ImGui using file globbing
+file(GLOB IMGUI_SOURCES
     extern/imgui/imgui.cpp
     extern/imgui/imgui_draw.cpp
     extern/imgui/imgui_widgets.cpp
@@ -93,6 +94,7 @@ set(IMGUI_SOURCES
     extern/imgui/backends/imgui_impl_glfw.cpp
     extern/imgui/backends/imgui_impl_opengl3.cpp
     # Add other ImGui source files if needed
+    extern/imgui_toggle/*.cpp
 )
 
 # Create the ImGui library target

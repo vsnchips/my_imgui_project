@@ -10,6 +10,7 @@
 
 #include <isfRenderer.hpp>
 #include <curveWidget.hpp>
+#include <WidgetOp.hpp>
 
 #include <LibloClient.hpp>
 
@@ -27,6 +28,8 @@ void DoAllTheImGuis()
 
     ImGui::SetNextWindowBgAlpha(0.5f); // Set the alpha value for the window background
     cw.Draw();
+
+    WidgetOp::renderWidgets();
 
 }
 

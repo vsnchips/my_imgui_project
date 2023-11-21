@@ -8,7 +8,8 @@
 #include <string>
 
 // TODO: possibly split this to a private header?
-#include "ISFParameters.hpp"
+#include <ISFParameters.hpp>
+#include <WidgetOp.hpp>
 
 #pragma region fileWatcher
 
@@ -97,7 +98,7 @@ private:
 
 #pragma endregion
 
-class ISFRenderer
+class ISFRenderer : public WidgetOp
 {
 public:
     ISFRenderer(const std::string &_shaderPath);
@@ -137,6 +138,8 @@ private:
     ISFParameters * m_isfParameters;
 
     void renderQuad();
+
+    void doGui() override;
 };
 
 #endif // ISFRENDERER_HPP

@@ -2,8 +2,7 @@
   "CREDIT": "by mojovideotech",
   "CATEGORIES": [
   	"generator",
-    "2d",
-  ],
+    "2d"],
   "ISFVSN" : "2",
   "DESCRIPTION": "",
   "INPUTS": [
@@ -64,8 +63,7 @@
 		"MAX" : 	2.0
 	}
   ]
-}
-*/
+}*/
 
 #version 330 core
 out vec4 FragColor;

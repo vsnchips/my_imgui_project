@@ -55,6 +55,8 @@ ISFRenderer::ISFRenderer(const std::string& isfPath) :
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+
+    registerWidget(this);
 }
 
 ISFRenderer::~ISFRenderer()
@@ -125,6 +127,7 @@ bool checkProgramLinking(GLuint program) {
     }
     return true;
 }
+
 void ISFRenderer::loadAndCompileISF(const std::string& shaderPath) {
     // Load and compile the ISF shader code (you'll need to implement this)
     std::string shaderCode = readShaderSource(shaderPath);
@@ -254,4 +257,9 @@ void ISFRenderer::setError(const std::string& errorMsg) {
 
 std::string ISFRenderer::getError() const {
     return error;
+}
+
+void ISFRenderer::doGui(){
+    // For each param, call the constructor map
+    m_isfParameters->doImGuiWidgets();
 }

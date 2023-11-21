@@ -3,23 +3,33 @@
 
 #include <vector>
 
-class WidgetOp {
+class WidgetOp
+{
 public:
-    virtual ~WidgetOp() {} // Virtual destructor
+    virtual ~WidgetOp() {}    // Virtual destructor
     virtual void doGui() = 0; // Pure virtual function
 
-    static void registerWidget(WidgetOp* widget) {
+    static void registerWidget(WidgetOp *widget)
+    {
         registeredWidgets.push_back(widget);
     }
-    static void renderWidgets() {
-        for (auto& widget : registeredWidgets) {
+    static void renderWidgets()
+    {
+        for (auto &widget : registeredWidgets)
+        {
             widget->doGui(); // Call doGui on each registered widget
         }
     }
 
-private:
-    static std::vector<WidgetOp*> registeredWidgets;
-};
+    std::string errorMessage;
 
+private:
+    // Method to execute a lambda with exception handling
+
+    template <typename Lambda>
+    void executeWithExceptionHandling(Lambda&& lambda);
+
+    static std::vector<WidgetOp *> registeredWidgets;
+};
 
 #endif

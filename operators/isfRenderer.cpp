@@ -9,6 +9,8 @@
 #include <thread>
 #include <ctime>
 
+#include <quadVBO.hpp>
+
 // #include "ISFParameters.hpp" // Include your ISF parameter handling functions
 ISFRenderer::ISFRenderer(const std::string& isfPath) :
  shaderPath(isfPath), shaderProgram(0),
@@ -251,6 +253,7 @@ void ISFRenderer::renderQuad()
     // Unbind the VAO after rendering
     glBindVertexArray(0);
 }
+
 void ISFRenderer::setError(const std::string& errorMsg) {
     error = errorMsg;
 }

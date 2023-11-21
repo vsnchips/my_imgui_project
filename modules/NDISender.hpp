@@ -17,6 +17,8 @@ public:
 
     ~NDISender() override;
 
+    int res[2] = {1920,1080};
+
     void captureFramebufferAndAssignToNDI(
         GLuint framebufferID,
         int fbWidth,

@@ -23,7 +23,7 @@ void NDISender::closeNDI()
 {
     executeWithExceptionHandling([this]()
                                  {
-        // Clean up NDI resources
+        // Clean up NDI eesources
         NDIlib_send_destroy(pNDI_send);
         NDIlib_destroy(); });
 }
@@ -45,8 +45,10 @@ void NDISender::InitializeNDI()
     pNDI_send = NDIlib_send_create(&NDI_send_create_desc);
 
     // Initialize video frame
-    video_frame.xres = 1920; // Set your video resolution
-    video_frame.yres = 1080;
+    video_frame = NDIlib_video_frame_v2_t();
+    video_frame.xres = res[0]; // Set your video resolution
+    video_frame.yres = res[1];
+
     video_frame.FourCC = NDIlib_FourCC_type_BGRA;
     video_frame.line_stride_in_bytes = video_frame.xres * 4; // Assuming 4 bytes per pixel
 
@@ -63,7 +65,6 @@ void NDISender::doGui()
         InitializeNDI();
     }
 
-    int res[2];
     ImGui::SliderInt2("Resolution", res, 0, 1920);
 
     if (ImGui::Button("Capture Framebuffer"))
@@ -229,4 +230,8 @@ void NDISender::sendToNDI()
         std::cout << "Sent frame to NDI." << std::endl;
 
     });
+}
+
+void NDISender::update(){
+
 }

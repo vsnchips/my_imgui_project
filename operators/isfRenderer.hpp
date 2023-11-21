@@ -126,10 +126,6 @@ private:
     GLuint shaderProgram;
     float timer;
 
-    // Vertex and index buffer objects
-    GLuint VAO;
-    GLuint VBO;
-    GLuint EBO;
 
     void loadAndCompileISF(const std::string &shaderPath);
     std::string readShaderSource(const std::string &filePath);

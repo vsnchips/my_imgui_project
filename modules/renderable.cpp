@@ -2,9 +2,28 @@
 #include <renderable.hpp>
 
 // Static member definitions
-GLuint FullScreenQuad::vao = 0;
-GLuint FullScreenQuad::vbo = 0;
+GLuint FullScreenQuad::VAO = 0;
+GLuint FullScreenQuad::VBO = 0;
+GLuint FullScreenQuad::EBO = 0;
+
 bool FullScreenQuad::initialized = false;
+
+    // Define a default vertex shader
+char* FullScreenQuad::DefaultVertexShaderSource = R"(
+        #version 330 core
+        layout (location = 0) in vec3 aPos;
+        layout (location = 1) in vec2 aTexCoord;
+
+        out vec2 TexCoord;
+
+        void main() {
+            gl_Position = vec4(aPos, 1.0);
+            TexCoord = aTexCoord;
+            //gl_FragCoord = aTexCoord;
+        }
+    )";
+
+
 std::mutex FullScreenQuad::initMutex;
 
     static void FullScreenQuad::Init()
@@ -61,3 +80,44 @@ std::mutex FullScreenQuad::initMutex;
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
         glBindVertexArray(0);
     }
+
+
+GLuint compileShaderProgram( const char*, const char* ){
+
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+
+    glShaderSource(vertexShader, 1, &FullScreenQuad::DefaultVertexShaderSource, nullptr);
+    glCompileShader(vertexShader);
+
+    // Check for vertex shader compilation errors
+    if (!checkShaderCompilation(vertexShader)) {
+        throw new Exception("Vertex shader compilation failed.");
+        return;
+    }
+
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &shaderCodePtr, nullptr);
+    glCompileShader(fragmentShader);
+
+    // Check for fragment shader compilation errors
+    if (!checkShaderCompilation(fragmentShader)) {
+        throw new Exception("Fragment shader compilation failed.");
+        return;
+    }
+
+    GLuint program = glCreateProgram();
+    glAttachShader(program, vertexShader);
+    glAttachShader(program, fragmentShader);
+    glLinkProgram(program);
+
+    // Check for program linking errors
+    if (!checkProgramLinking(program)) {
+        throw new Exception("Shader program linking failed.");
+        return;
+    }
+
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+
+    return program;
+}

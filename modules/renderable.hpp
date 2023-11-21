@@ -19,6 +19,9 @@ public:
     // Initializes the VBO and VAO for the full-screen quad
     static void Init(); // Render the full-screen quad
     static void RenderQuad();
+
+    static char* FullScreenQuad::DefaultVertexShaderSource;
+
 };
 
 #endif

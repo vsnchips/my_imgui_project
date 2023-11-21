@@ -8,7 +8,7 @@
   "DESCRIPTION": "",
   "INPUTS": [
 	{
-		"NAME" : 	"toggledefaultTrue",
+		"NAME" : 	"toggledefaultTrue2",
 		"TYPE" : 	"bool",
 		"DEFAULT" :	true
 	},
@@ -23,13 +23,18 @@
 		"DEFAULT" :	[ 0.0, 0.0 ],
 		"MAX" : 	[ 3.0, 3.0 ],
      	"MIN" : 	[ -3.0, -3.0 ]
-	},
+	}, 
 	{
 		"NAME" : 	"zoom",
 		"TYPE" : 	"float",
 		"DEFAULT" :	1.5,
 		"MIN" : 	0.5,
 		"MAX" : 	3.0
+	},
+		{
+		"NAME" : 	"toggledefaultTrue",
+		"TYPE" : 	"bool",
+		"DEFAULT" :	true
 	},
 	{
 		"NAME" : 	"offset",
@@ -62,7 +67,7 @@
 	{
 		"NAME" : 	"runtime",
 		"TYPE" : 	"float",
-		"DEFAULT" : 24.0,
+		"DEFAULT" : 34.0,
 		"MIN" : 	6.0,
 		"MAX" : 	60.0
 	},

@@ -1,7 +1,9 @@
 #ifndef _WIDGET_OP_HPP
 #define _WIDGET_OP_HPP
 
+#include <iostream>
 #include <vector>
+#include <string>
 
 class WidgetOp
 {
@@ -13,6 +15,7 @@ public:
     {
         registeredWidgets.push_back(widget);
     }
+
     static void renderWidgets()
     {
         for (auto &widget : registeredWidgets)
@@ -21,13 +24,12 @@ public:
         }
     }
 
-    std::string * errorMessage;
+    std::string errorMessage;
 
-private:
+protected:
     // Method to execute a lambda with exception handling
-
     template <typename Lambda>
-    void executeWithExceptionHandling(Lambda&& lambda);
+    void executeWithExceptionHandling(Lambda &&lambda);
 
     static std::vector<WidgetOp *> registeredWidgets;
 };

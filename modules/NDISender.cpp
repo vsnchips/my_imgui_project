@@ -1,4 +1,4 @@
-
+#include <iostream>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -15,13 +15,13 @@ NDISender::NDISender()
     WidgetOp::registerWidget(this);
 }
 
-void closeNDI()
+void NDISender::closeNDI()
 {
-    executeWithExceptionHandling([]() = > {
+    executeWithExceptionHandling([this]()
+                                 {
         // Clean up NDI resources
         NDIlib_send_destroy(pNDI_send);
-        NDIlib_destroy();
-    });
+        NDIlib_destroy(); });
 }
 
 NDISender::~NDISender()
@@ -31,7 +31,6 @@ NDISender::~NDISender()
 // Function to initialize NDI
 void NDISender::InitializeNDI()
 {
-
     // Initialize NDI
     NDIlib_initialize();
 
@@ -59,9 +58,12 @@ void NDISender::doGui()
         InitializeNDI();
     }
 
+    int res[2];
+    ImGui::SliderInt2("Resolution", res, 0, 1920);
+
     if (ImGui::Button("Capture Framebuffer"))
     {
-        captureFramebufferAndAssignToNDI(/* Pass framebuffer ID, targetWidth, targetHeight */);
+        captureFramebufferAndAssignToNDI(0, 640, 480, res[0], res[2]);
     }
 
     if (ImGui::Button("Send to NDI"))
@@ -77,17 +79,59 @@ void NDISender::doGui()
     ImGui::End();
 }
 
-void NDISender::captureFramebufferAndAssignToNDI(GLuint framebufferID, int targetWidth, int targetHeight)
+
+// Function to capture the current framebuffer and render it to a resized one
+void resizeFramebuffer(GLFWwindow* window, int newWidth, int newHeight) {
+    // First, capture the current framebuffer content
+    GLint originalFBO;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &originalFBO);
+
+    // Create a texture to hold the captured content
+    GLuint capturedTexture;
+    glGenTextures(1, &capturedTexture);
+    glBindTexture(GL_TEXTURE_2D, capturedTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, newWidth, newHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // Copy the current framebuffer content to the texture
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, originalFBO);
+    glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, newWidth, newHeight, 0);
+
+    // Create a new framebuffer
+    GLuint resizedFBO;
+    glGenFramebuffers(1, &resizedFBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, resizedFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, capturedTexture, 0);
+
+    // Check if framebuffer is complete
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        // Handle errors here
+    }
+
+    // Set the viewport to the new dimensions
+    glViewport(0, 0, newWidth, newHeight);
+
+    // Render the texture to the new framebuffer
+    // ... [Set up and use a shader to render the quad with the captured texture]
+
+    // Bind the original framebuffer back
+    glBindFramebuffer(GL_FRAMEBUFFER, originalFBO);
+
+    // Clean up
+    glDeleteTextures(1, &capturedTexture);
+    glDeleteFramebuffers(1, &resizedFBO);
+}
+
+
+void NDISender::captureFramebufferAndAssignToNDI(GLuint framebufferID,
+                                                 int frameBufferWidth, int frameBufferHeight,
+                                                 int targetWidth, int targetHeight)
 {
-    executeWithExceptionHandling([]() = > {
+    executeWithExceptionHandling([this, framebufferID, frameBufferWidth, frameBufferHeight, targetWidth, targetHeight]()
+                                 {
         // Bind the specified framebuffer
         glBindFramebuffer(GL_FRAMEBUFFER, framebufferID);
-
-        // Get the size of the currently bound framebuffer
-        // Get the size of the framebuffer
-        GLint framebufferWidth, framebufferHeight;
-        glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_FRAMEBUFFER_ATTACHMENT_WIDTH, &framebufferWidth);
-        glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_FRAMEBUFFER_ATTACHMENT_HEIGHT, &framebufferHeight);
 
         // Allocate memory for the framebuffer data
         std::vector<uint8_t> framebufferData(frameBufferWidth * frameBufferHeight * 4); // Assuming 4 bytes per pixel (RGBA)
@@ -125,8 +169,7 @@ void NDISender::captureFramebufferAndAssignToNDI(GLuint framebufferID, int targe
         std::memcpy(video_frame.p_data, framebufferData.data(), framebufferData.size());
 
         // Unbind framebuffer
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    });
+        glBindFramebuffer(GL_FRAMEBUFFER, 0); });
 }
 
 void NDISender::sendToNDI()

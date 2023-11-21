@@ -3,22 +3,31 @@
 
 #include <WidgetOp.hpp>
 
-class NDISender : WidgetOp
+class NDISender : public WidgetOp
 {
 public:
     void update();
     void doGui() override;
 
+    NDISender();
+
     ~NDISender() override;
 
-    void captureFramrbufferAndAssignToNDI();
+    void captureFramebufferAndAssignToNDI(
+        GLuint framebufferID,
+        int fbWidth,
+        int fbHeight,
+        int targetWidth,
+        int targetHeight);
 
     void sendToNDI();
 
 private:
-    void initializeNDI();
+    void InitializeNDI();
+    void closeNDI();
     // NDI variables
     NDIlib_send_instance_t pNDI_send;
     NDIlib_video_frame_v2_t video_frame;
-}
+};
+
 #endif

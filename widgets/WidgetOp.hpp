@@ -6,11 +6,16 @@
 #include <string>
 
 #define DEBUG
-
 #ifdef DEBUG
-// #define BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED
-#define WIN32_LEAN_AND_MEAN
+
+#ifdef WIN32
+//#define WIN32_LEAN_AND_MEAN
+#endif
+#ifdef __APPLE__
+#define BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED
 #include <boost/stacktrace.hpp>
+#endif
+
 #endif
 
 class WidgetOp

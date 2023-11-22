@@ -17,10 +17,16 @@
 
 #include "theme.hpp"
 
+#include <mainWindow.hpp>
+
 // Test Modules
 CurveWidget cw;
 ISFRenderer* renderer = nullptr;
 NDISender* ndiSend = nullptr;
+
+
+// Shared objects
+GLFWwindow * window1;
 
 // Function to create ImGui dialogs
 void DoAllTheImGuis()
@@ -144,7 +150,7 @@ int main(int argc, char* argv[]) {
 #pragma region create window
 
     // Create the first GLFW window
-    GLFWwindow *window1 = glfwCreateWindow(640, 480, "Window 1", nullptr, nullptr);
+    window1 = glfwCreateWindow(640, 480, "Window 1", nullptr, nullptr);
     if (!window1)
     {
         glfwTerminate();

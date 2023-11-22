@@ -23,7 +23,7 @@
 		"DEFAULT" :	[ 0.0, 0.0 ],
 		"MAX" : 	[ 3.0, 3.0 ],
      	"MIN" : 	[ -3.0, -3.0 ]
-	}, 
+	},
 	{
 		"NAME" : 	"zoom",
 		"TYPE" : 	"float",
@@ -87,6 +87,6 @@ out vec4 FragColor;
 in vec2 TexCoord;
 void main()
 {
-	FragColor = vec4(TexCoord,0.0,0.2);
+	FragColor = vec4(TexCoord,0.0,0.5);
 	//FragColor = vec4(gl_FragCoord.xy/1000,0.0,0.2);
 }

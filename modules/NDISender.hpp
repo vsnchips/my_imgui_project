@@ -27,7 +27,7 @@ public:
 
     ~NDISender() override;
 
-    int res[2] = {1920, 1080};
+    int targetResolution[2] = {1920, 1080};
     void captureFramebufferAndAssignToNDI(GLuint framebufferID,
                                           int frameBufferWidth, int frameBufferHeight,
                                           int targetWidth, int targetHeight);
@@ -35,9 +35,9 @@ public:
     void sendToNDI();
 
 private:
-    
+
     bool enabled = false;
-    
+
     void captureFrame();
 
     void InitializeNDI();

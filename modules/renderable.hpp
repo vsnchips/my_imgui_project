@@ -2,7 +2,13 @@
 #define _RENDERABLE_HPP
 
 #include <GL/glew.h>
+
+#if defined(WIN32)
+#include <GL/gl.h>
+#else
 #include <OpenGL/gl.h>
+#endif
+
 #include <mutex>
 
 class FullScreenQuad

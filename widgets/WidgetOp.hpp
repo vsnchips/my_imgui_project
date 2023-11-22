@@ -5,6 +5,13 @@
 #include <vector>
 #include <string>
 
+#define DEBUG
+
+#ifdef DEBUG
+#define BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED
+#include <boost/stacktrace.hpp>
+#endif
+
 class WidgetOp
 {
 public:
@@ -39,11 +46,20 @@ protected:
         {
             // Handle the exception
             std::cerr << "Error: " << e.what() << std::endl;
+
+            #ifdef DEBUG
+                std::cerr << "Stacktrace:\n" << boost::stacktrace::stacktrace() << std::endl;
+            #endif
         }
         catch (...)
         {
             // Handle any other exceptions (not derived from std::exception)
             std::cerr << "An unknown error occurred." << std::endl;
+
+            #ifdef DEBUG
+                std::cerr << "Stacktrace:\n" << boost::stacktrace::stacktrace() << std::endl;
+            #endif
+
         }
     }
 

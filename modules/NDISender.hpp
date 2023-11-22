@@ -17,7 +17,8 @@
 
 #include "Processing.NDI.Lib.h"
 
-class NDISender : public WidgetOp {
+class NDISender : public WidgetOp
+{
 public:
     void update();
     void doGui() override;
@@ -26,12 +27,10 @@ public:
 
     ~NDISender() override;
 
-    void captureFramebufferAndAssignToNDI(
-        GLuint framebufferID,
-        int fbWidth,
-        int fbHeight,
-        int targetWidth,
-        int targetHeight);
+    int res[2] = {1920, 1080};
+    void captureFramebufferAndAssignToNDI(GLuint framebufferID,
+                                          int frameBufferWidth, int frameBufferHeight,
+                                          int targetWidth, int targetHeight);
 
     void sendToNDI();
 

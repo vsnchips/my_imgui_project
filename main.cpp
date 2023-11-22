@@ -8,16 +8,20 @@
 #include <sstream>
 #include <map>
 
+#include <NDISender.hpp>
 #include <isfRenderer.hpp>
 #include <curveWidget.hpp>
 #include <WidgetOp.hpp>
 
 #include <LibloClient.hpp>
 
-
 #include "theme.hpp"
 
+// Test Modules
 CurveWidget cw;
+ISFRenderer* renderer = nullptr;
+NDISender* ndiSend = nullptr;
+
 // Function to create ImGui dialogs
 void DoAllTheImGuis()
 {
@@ -32,7 +36,7 @@ void DoAllTheImGuis()
     ImGui::SetNextWindowBgAlpha(0.5f); // Set the alpha value for the window background
     cw.Draw();
 
-    WidgetOp::renderWidgets();
+ WidgetOp::renderWidgets();
 
 }
 
@@ -42,7 +46,6 @@ static void glfw_error_callback(int error, const char *description)
 }
 
 
-ISFRenderer* renderer = nullptr;
 void handleISFFile(std::string file){
 
         // Create the ISFRenderer and load the shader
@@ -208,6 +211,7 @@ int main(int argc, char* argv[]) {
     // handle file drop if one has been passed
     if ( !isfFile.empty() ) handleISFFile(isfFile);
 
+    ndiSend = new NDISender();
     while (!glfwWindowShouldClose(window1))
     {
         glfwPollEvents();
@@ -238,6 +242,7 @@ int main(int argc, char* argv[]) {
 
         // Update the modules
         lc.update();
+        ndiSend->update();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

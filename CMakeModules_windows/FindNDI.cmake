@@ -2,8 +2,8 @@ message("Searching for NDI headers and libs.")
 
 # Set the search path to Homebrew's GLFW installation directory
 #find_path(NDI_INCLUDE_DIRS NAMES Processing.NDI.Lib.h PATHS "${CMAKE_CURRENT_SOURCE_DIR}\\extern\\ndi\\include")
-find_path(NDI_INCLUDE_DIRS NAMES Processing.NDI.Lib.h PATHS "C:/Program Files/NDI/NDI 5 SDK/Include
-")
+find_path(NDI_INCLUDE_DIRS NAMES Processing.NDI.Lib.h PATHS "C:/Program Files/NDI/NDI 5 SDK/Include")
+
 # Find the NDI library file
 #find_library(NDI_LIBRARY NAMES libndi.dylib PATHS "${CMAKE_CURRENT_SOURCE_DIR}\\extern\\ndi\\lib\\macOS")
 find_library(NDI_LIBRARY NAMES Processing.NDI.Lib.x64.lib PATHS "C:/Program Files/NDI/NDI 5 SDK/Lib/x64")

@@ -35,10 +35,15 @@ public:
     void sendToNDI();
 
 private:
+    
+    bool enabled = false;
+    
+    void captureFrame();
+
     void InitializeNDI();
     void closeNDI();
     // NDI variables
-    NDIlib_send_instance_t pNDI_send;
+    NDIlib_send_instance_t pNDI_send = nullptr;
     NDIlib_video_frame_v2_t video_frame;
 };
 

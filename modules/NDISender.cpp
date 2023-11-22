@@ -7,6 +7,7 @@
  #include <GLFW/glfw3.h>
 
 #include <imgui.h>
+#include <imgui_toggle.h>
 
 #include <renderable.hpp>
 
@@ -17,15 +18,28 @@ NDISender::NDISender()
     FullScreenQuad::Init();
 
     WidgetOp::registerWidget(this);
+
+    InitializeNDI();
+
 }
 
 void NDISender::closeNDI()
 {
-    executeWithExceptionHandling([this]()
-                                 {
+    executeWithExceptionHandling([this](){
+
+        std::cout<<"Closing NDI"<<std::endl;
+
         // Clean up NDI resources
-        NDIlib_send_destroy(pNDI_send);
-        NDIlib_destroy(); });
+        if (pNDI_send != nullptr)
+            NDIlib_send_destroy(pNDI_send);
+        else std::cout << "the sender is already closed.";
+
+        std::cout << "closing the lib" << std::endl;
+        NDIlib_destroy();
+        
+        pNDI_send = nullptr;
+
+        });
 }
 
 NDISender::~NDISender()
@@ -33,32 +47,53 @@ NDISender::~NDISender()
     closeNDI();
 }
 
+void NDISender::captureFrame(){
+        captureFramebufferAndAssignToNDI(0, res[0], res[1], res[0], res[1]);
+}
+
 // Function to initialize NDI
 void NDISender::InitializeNDI()
 {
-    // Initialize NDI
-    NDIlib_initialize();
+    executeWithExceptionHandling([this]() {
 
-    // Create NDI sender
-    NDIlib_send_create_t NDI_send_create_desc;
-    NDI_send_create_desc.p_ndi_name = "YourNDISenderName";
-    pNDI_send = NDIlib_send_create(&NDI_send_create_desc);
+        // Clear old data
+        closeNDI();
 
-    // Initialize video frame
-    video_frame = NDIlib_video_frame_v2_t();
-    video_frame.xres = res[0]; // Set your video resolution
-    video_frame.yres = res[1];
+        std::cout<<"Initialising NDI"<<std::endl;
 
-    video_frame.FourCC = NDIlib_FourCC_type_BGRA;
-    video_frame.line_stride_in_bytes = video_frame.xres * 4; // Assuming 4 bytes per pixel
+        // Initialize NDI
+        NDIlib_initialize();
 
-    // You may need to allocate memory for video_frame.p_data and set other parameters
-    video_frame.p_data = new uint8_t[video_frame.line_stride_in_bytes * video_frame.yres];
+        // Create NDI sender
+        NDIlib_send_create_t NDI_send_create_desc;
+        NDI_send_create_desc.p_ndi_name = "YourNDISenderName";
+        pNDI_send = NDIlib_send_create(&NDI_send_create_desc);
+
+        std::cout<< "pNDI_send value: "<< pNDI_send << std::endl;
+
+        // Initialize video frame
+        video_frame = NDIlib_video_frame_v2_t();
+        video_frame.xres = res[0]; // Set your video resolution
+        video_frame.yres = res[1];
+
+        video_frame.FourCC = NDIlib_FourCC_type_BGRA;
+        video_frame.line_stride_in_bytes = video_frame.xres * 4; // Assuming 4 bytes per pixel
+
+        // You may need to allocate memory for video_frame.p_data and set other parameters
+        video_frame.p_data = new uint8_t[video_frame.line_stride_in_bytes * video_frame.yres];
+
+        });
 }
+
 
 void NDISender::doGui()
 {
     ImGui::Begin("NDI Sender");
+
+    ImGui::Toggle("Enabled", &enabled,
+    ImGuiToggleFlags_Animated |
+    ImGuiToggleFlags_Bordered |
+    ImGuiToggleFlags_Shadowed );
 
     if (ImGui::Button("Setup NDI"))
     {
@@ -68,8 +103,8 @@ void NDISender::doGui()
     ImGui::SliderInt2("Resolution", res, 0, 1920);
 
     if (ImGui::Button("Capture Framebuffer"))
-    {
-        captureFramebufferAndAssignToNDI(0, res[0], res[1], res[0], res[2]);
+    {   
+        captureFrame();
     }
 
     if (ImGui::Button("Send to NDI"))
@@ -183,11 +218,23 @@ void NDISender::captureFramebufferAndAssignToNDI(GLuint framebufferID,
         video_frame.xres = targetWidth;
         video_frame.yres = targetHeight;
         video_frame.FourCC = NDIlib_FourCC_type_BGRA;
+        size_t requiredSize = video_frame.xres * video_frame.yres * 4; // 4 bytes per pixel for RGBA
+        video_frame.p_data = new uint8_t[requiredSize];
         video_frame.line_stride_in_bytes = targetWidth * 4; // Assuming 4 bytes per pixel
 
-        // Assuming video_frame.p_data is already allocated and has enough space
-        std::memcpy(video_frame.p_data, framebufferData.data(), framebufferData.size());
-        std::cout << "Framebuffer data copied to NDI video frame" << std::endl;
+
+    size_t framebufferSize = framebufferData.size();
+    if (framebufferSize > requiredSize) {
+
+        // Handle error: the framebuffer data is too large for the allocated buffer
+        std::cerr << "Error: Framebuffer data size exceeds allocated buffer size." << std::endl;
+        // Copy as much a possible anyway.
+        std::memcpy(video_frame.p_data, framebufferData.data(), requiredSize);
+
+    } else {
+        std::memcpy(video_frame.p_data, framebufferData.data(), framebufferSize);
+        // std::cout << "Framebuffer data copied to NDI video frame" << std::endl;
+    }
 
         // Unbind framebuffer
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -212,5 +259,8 @@ void NDISender::sendToNDI()
 }
 
 void NDISender::update(){
-
+    if (enabled){
+        captureFrame();
+        sendToNDI();
+    }
 }

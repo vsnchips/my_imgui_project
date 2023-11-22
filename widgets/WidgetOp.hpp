@@ -8,7 +8,8 @@
 #define DEBUG
 
 #ifdef DEBUG
-#define BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED
+// #define BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED
+#define WIN32_LEAN_AND_MEAN
 #include <boost/stacktrace.hpp>
 #endif
 

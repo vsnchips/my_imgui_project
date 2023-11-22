@@ -142,15 +142,24 @@ set(OSC_LIBS ${LIBLO_LIBRARY})
 find_package(ndi REQUIRED)
 
 ############## BOOST ##############
-set(BOOST_SEARCH_PATH /opt/homebrew/Cellar )
-# find_package( Boost  REQUIRED ALL PATHS ${BOOST_SEARCH_PATH} )
-find_package( Boost REQUIRED ALL )
-if(Boost_ALL_TARGETS)
-    message("Found Boost_ALL_TARGETS: ${Boost_ALL_TARGETS}")
-    message("Found Boost_INCLUDE_DIRS: ${Boost_INCLUDE_DIRS}")
-endif()
 
-set(BOOST_TARGETS ${Boost_ALL_TARGETS})
+# set(BOOST_SEARCH_PATH /opt/homebrew/Cellar )
+
+# include(FetchContent)
+
+# FetchContent_Declare(
+#   Boost
+#   URL https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.xz
+#   URL_MD5 6cf0cdd797bca685910d527ae3c08cb3
+#   DOWNLOAD_EXTRACT_TIMESTAMP ON
+# )
+
+# FetchContent_MakeAvailable(Boost)
+# set(BOOST_TARGETS ${Boost_ALL_TARGETS})
+
+if(WIN32)
+  set(Boost_INCLUDE_DIRS E:/cloudwork/dev_env/boost_1_83_0/)
+endif()
 
 #TODO:
 #Find and link imnodes

@@ -13,7 +13,7 @@
 #endif
 */
 
-#include <GL/glfw3.h>
+#include <GLFW/glfw3.h>
 
 #include "Processing.NDI.Lib.h"
 

@@ -9,7 +9,7 @@
 // #include <OpenGL/gl.h>
 // #endif
 
-#include <GL/glfw3.h>
+#include <GLFW/glfw3.h>
 
 #include <mutex>
 

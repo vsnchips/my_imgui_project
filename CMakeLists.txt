@@ -158,7 +158,7 @@ find_package(ndi REQUIRED)
 # set(BOOST_TARGETS ${Boost_ALL_TARGETS})
 
 if(WIN32)
-  set(Boost_INCLUDE_DIRS E:/cloudwork/dev_env/boost_1_83_0/)
+  set(Boost_INCLUDE_DIRS E:/cloudwork/dev_env/boost_1_79_0/)
 endif()
 
 #TODO:

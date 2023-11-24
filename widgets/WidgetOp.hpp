@@ -9,12 +9,13 @@
 #ifdef DEBUG
 
 #ifdef WIN32
-//#define WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
 #endif
 #ifdef __APPLE__
 #define BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED
-#include <boost/stacktrace.hpp>
 #endif
+
+#include <boost/stacktrace.hpp>
 
 #endif
 

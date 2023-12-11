@@ -59,21 +59,23 @@ void NDISender::captureFrame()
         InitializeGLObjects();
     }
 
-    captureFramebufferAndAssignToNDI(0, sourceWidth, sourceHeight, targetResolution[0], targetResolution[1]);
-    // captureFramebufferAndAssignToNDI(0, 100, 100, targetResolution[0], targetResolution[1]);
+    captureFramebufferAndAssignToNDI(0);
 }
 
-void InitializeGLObjects(){
+void NDISender::InitializeGLObjects(){
 
     // First, capture the current framebuffer content
-    int sourceWidth, sourceHeight;
+    // int sourceWidth, sourceHeight;
     glfwGetFramebufferSize(window1, &sourceWidth, &sourceHeight);
 
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &originalFBO);
 
     glGenTextures(1, &capturedTexture);
     glBindTexture(GL_TEXTURE_2D, capturedTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sourceWidth, sourceHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sourceWidth, sourceHeight, 0,
+     GL_RGBA, 
+     GL_UNSIGNED_BYTE
+     , NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -82,10 +84,17 @@ void InitializeGLObjects(){
 
 
     // If you need a color attachment:
+    int targetWidth = targetResolution[0];
+    int targetHeight= targetResolution[1];
     glGenRenderbuffers(1, &colorRenderbuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, colorRenderbuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, targetWidth, targetHeight);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, colorRenderbuffer);
+    glFramebufferRenderbuffer(
+        GL_FRAMEBUFFER,
+        GL_COLOR_ATTACHMENT0,
+        GL_RENDERBUFFER,
+        colorRenderbuffer);
+
     // Check if the framebuffer is complete
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
     {
@@ -118,7 +127,7 @@ void NDISender::InitializeNDI()
 
                                      // Create NDI sender
                                      NDIlib_send_create_t NDI_send_create_desc;
-                                     NDI_send_create_desc.p_ndi_name = "YourNDISenderName";
+                                     NDI_send_create_desc.p_ndi_name = "VMPW_NDI_Sender";
                                      pNDI_send = NDIlib_send_create(&NDI_send_create_desc);
 
                                      std::cout << "pNDI_send value: " << pNDI_send << std::endl;
@@ -177,7 +186,11 @@ void NDISender::doGui()
 }
 
 // Function to capture the current framebuffer and render it to a resized one
-void renderToResizedFrameBuffer(int sourceWidth, int sourceHeight, int newWidth, int newHeight)
+void NDISender::renderToResizedFrameBuffer(
+    int sourceWidth, 
+    int sourceHeight, 
+    int newWidth, 
+    int newHeight)
 {
     // First, capture the current framebuffer content
     // glGetIntegerv(GL_FRAMEBUFFER_BINDING, &originalFBO);
@@ -232,8 +245,8 @@ void renderToResizedFrameBuffer(int sourceWidth, int sourceHeight, int newWidth,
 
 void NDISender::captureFramebufferAndAssignToNDI(GLuint framebufferID)
 {
-    executeWithExceptionHandling([this, framebufferID]()
-                                 {
+    executeWithExceptionHandling([this, framebufferID]() {
+
         int targetWidth = targetResolution[0];
         int targetHeight = targetResolution[1];
 
@@ -247,15 +260,19 @@ void NDISender::captureFramebufferAndAssignToNDI(GLuint framebufferID)
         if (sourceWidth != targetWidth || sourceHeight != targetHeight)
         {
             std::cout << "Resizing is required" << std::endl;
+            std::cout << "source w/h" << sourceWidth<< "/" << sourceHeight << std::endl;
+            std::cout << "target w/h" << targetWidth<< "/" << targetHeight << std::endl;
             renderToResizedFrameBuffer(sourceWidth, sourceHeight, targetWidth, targetHeight);
         }
 
         // Allocate memory for the framebuffer data
-        std::vector<uint8_t> resizedFBData(targetWidth * targetHeight * 4); // Assuming 4 bytes per pixel (RGBA)
+        std::vector<uint8_t> resizedFBData(targetWidth * targetHeight * 4);
+         // Assuming 4 bytes per pixel (RGBA)
         // std::cout << "Framebuffer data allocated: " << targetWidth * targetHeight * 4 << " bytes" << std::endl;
 
         // Move the framebuffer data
-        glReadPixels(0, 0, targetWidth, targetHeight, GL_BGRA, GL_UNSIGNED_BYTE, resizedFBData.data());
+        glReadPixels(0, 0, targetWidth, targetHeight, GL_BGRA,
+         GL_UNSIGNED_BYTE, resizedFBData.data());
         // std::cout << "Framebuffer data read" << std::endl;
 
         // Assign the data to the NDI video frame
@@ -282,21 +299,21 @@ void NDISender::captureFramebufferAndAssignToNDI(GLuint framebufferID)
         // Unbind framebuffer
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         // std::cout << "Framebuffer unbound" << std::endl; });
+    });
 }
 
 void NDISender::sendToNDI()
 {
-    executeWithExceptionHandling([this]()
-                                 {
-                                     if (pNDI_send == nullptr)
-                                     {
-                                         throw std::runtime_error("NDI sender is not initialized.");
-                                     }
+    executeWithExceptionHandling([this](){
+        if (pNDI_send == nullptr)
+        {
+            throw std::runtime_error("NDI sender is not initialized.");
+        }
 
-                                     // Assuming video_frame is already populated from the captureFramebufferAndAssignToNDI function
-                                     NDIlib_send_send_video_v2(pNDI_send, &video_frame);
+        // Assuming video_frame is already populated from the captureFramebufferAndAssignToNDI function
+        NDIlib_send_send_video_v2(pNDI_send, &video_frame);
 
-                                     std::cout << "Sent frame to NDI." << std::endl; });
+        std::cout << "Sent frame to NDI." << std::endl; });
 }
 
 void NDISender::update()

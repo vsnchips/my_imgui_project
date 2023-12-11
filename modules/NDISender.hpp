@@ -32,7 +32,14 @@ public:
     int targetResolution[2] = {1920, 1080};
     int lastTargetResolution[2] = {1920, 1080};
 
-    void captureFramebufferAndAssignToNDI(GLuint framebufferID);
+    void renderToResizedFrameBuffer(
+        int sourceWidth, 
+        int sourceHeight, 
+        int newWidth, 
+        int newHeight);
+
+    void captureFramebufferAndAssignToNDI(
+        GLuint framebufferID);
 
     void InitializeGLObjects();
 
@@ -55,10 +62,11 @@ private:
     GLint originalFBO;
     GLuint capturedTexture;
     GLuint resizedFBO;
-    GLuint colorRenderbuffer; // If you need a color attachment
+    GLuint colorRenderbuffer; 
     GLuint program;
 
-    // Use a simple shader program which just renders a texture.
+    // Use a simple shader program which 
+    // just renders a texture.
     const char *fragmentShaderSrc = R"glsl(
                 #version 330 core
                 out vec4 FragColor;
@@ -70,7 +78,8 @@ private:
                     vec2 FlipTexCoord = TexCoord;
                     FlipTexCoord.y = - FlipTexCoord.y + 1.0;
 
-                   FragColor = texture(screenTexture, FlipTexCoord);
+                   FragColor = texture(
+                    screenTexture, FlipTexCoord);
                 }
             )glsl";
 };
